@@ -1,0 +1,53 @@
+{
+  "version": "1.0",
+  "conceptualSchemaSettings": {},
+  "queries": [
+    {
+      "name": "Query1",
+      "navigationStepName": "Navigation",
+      "text": [
+        "let",
+        "    // Using the CryptoDataPath parameter to get the file path",
+        "    CryptoPath = CryptoDataPath,  // The value from the parameter, which contains the folder path",
+        "",
+        "    // Using the full path to access the Excel file",
+        "    Source = Excel.Workbook(File.Contents(CryptoPath & \"crypto_data.xlsx\"), null, true),  // Load the Excel file using the path from the parameter",
+        "    Coin_Price_Data_Sheet = Source{[Item=\"Coin_Price_Data\",Kind=\"Sheet\"]}[Data],  // Extract the specific sheet 'Coin_Price_Data' from the workbook",
+        "",
+        "    // Promote the first row to headers for better readability",
+        "    #\"Promoted Headers\" = Table.PromoteHeaders(Coin_Price_Data_Sheet, [PromoteAllScalars=true]),  // Set the first row as column headers",
+        "",
+        "    // Change column types to appropriate types for further processing",
+        "    #\"Changed Type\" = Table.TransformColumnTypes(#\"Promoted Headers\",{{\"ID\", Int64.Type}, {\"Date\", type number}, {\"Price (USD)\", Currency.Type}}),  // Convert the 'ID' column to Int64, 'Date' to number, and 'Price (USD)' to currency",
+        "",
+        "    // Divide the 'Date' column by 1000 to convert milliseconds to seconds",
+        "    #\"Divided Column\" = Table.TransformColumns(#\"Changed Type\", {{\"Date\", each _ / 1000, type number}}),  // Divide the timestamp (milliseconds) by 1000 to convert to seconds",
+        "",
+        "    // Convert the Unix timestamp (in seconds) to a readable DateTime format",
+        "    #\"Converted Date\" = Table.TransformColumns(#\"Divided Column\", {{\"Date\", each DateTime.From(#datetime(1970, 1, 1, 0, 0, 0) + #duration(0, 0, 0, _)), type datetime}}),  // Convert Unix timestamp to DateTime format",
+        "",
+        "    // Filter out rows where the time is not exactly midnight (00:00:00)",
+        "    #\"Removed Time\" = Table.SelectRows(#\"Converted Date\", each DateTime.ToText([Date], \"HH:mm:ss\") = \"00:00:00\"),  // Keep only rows where the time is exactly midnight",
+        "",
+        "    // Change the 'Date' column type to just a date (removing the time part)",
+        "    #\"Changed Type1\" = Table.TransformColumnTypes(#\"Removed Time\",{{\"Date\", type date}})  // Change the 'Date' column to just a date (without the time part)",
+        "in",
+        "    #\"Changed Type1\"  // Output the final table with the transformed data"
+      ],
+      "isDirectQuery": false,
+      "resultType": "Exception"
+    },
+    {
+      "name": "CryptoDataPath",
+      "navigationStepName": "Navigation",
+      "text": [
+        "\"test\" meta [IsParameterQuery=true, Type=\"Any\", IsParameterQueryRequired=true]"
+      ],
+      "loadAsTableDisabled": true,
+      "resultType": "Text"
+    }
+  ],
+  "queryGroups": [],
+  "culture": "en-US",
+  "firewallEnabled": true
+}

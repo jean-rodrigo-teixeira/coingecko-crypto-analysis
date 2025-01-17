@@ -14,12 +14,20 @@ This project aims to collect data about various cryptocurrencies using the publi
    - Processing the returned data (converting timestamps to readable dates).
    - Saving the extracted data into an Excel file (**`crypto_data.xlsx`**).
 
+3. **`crypto_data.pbix`**: Power BI file that allows us to visualize the collected cryptocurrency data. The Power BI file includes:
+   - **Power Query Transformations**: This part of the process involves loading the `crypto_data.xlsx` file into Power BI, processing and transforming the data using Power Query. Key transformations include converting Unix timestamps into readable dates, filtering data for specific times, and changing the column types to ensure accurate visualizations.
+   - **Data Modeling**: The transformed data is structured in a way that allows easy creation of reports and dashboards.
+   - **Visualizations**: The Power BI dashboard visualizes the historical price trends of cryptocurrencies, including daily price fluctuations, and allows users to explore the collected metadata.
+
 ## Features
 
 - Collects historical price data for **Bitcoin**, **Ethereum**, **Ripple**, **Litecoin**, and other cryptocurrencies over the last 365 days.
 - Collects metadata for cryptocurrencies, such as current price, market cap, supply, and max supply.
 - Converts timestamps provided by the API into readable dates.
 - Saves the data in Excel format, with three sheets: `Coin_ID_and_Name`, `Coin_Metadata`, and `Coin_Price_Data`.
+- **Power BI Integration**:
+  - Power BI integrates with the **`crypto_data.xlsx`** file, applying necessary transformations (such as date conversion and type changes).
+  - The data is visualized in an easy-to-understand dashboard format, with customizable filters and metrics for analyzing cryptocurrency trends.
 
 ## How to Use
 
@@ -30,8 +38,9 @@ Make sure you have the following packages installed:
 - `requests`
 - `pandas`
 - `openpyxl` (to save data in Excel format)
+- Power BI (for creating and viewing the `crypto_data.pbix` file)
 
-You can install the dependencies by running the following command:
+You can install the Python dependencies by running the following command:
 
 ```bash
 pip install requests pandas openpyxl
