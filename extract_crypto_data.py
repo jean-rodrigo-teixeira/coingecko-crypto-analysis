@@ -1,66 +1,73 @@
+import os
 import requests
 import pandas as pd
-import time  # Importando a função time.sleep
+import time
 from datetime import datetime
 
-# Função para pegar dados e metadados
+# Getting the output folder from environment variables or setting a default
+output_folder = os.getenv('CRYPTO_DATA_PATH', 'crypto_data')
+
+# Ensure the output folder exists
+os.makedirs(output_folder, exist_ok=True)
+
+# Function to get general data and metadata
 def get_crypto_data(coin_id):
     url = f"https://api.coingecko.com/api/v3/coins/{coin_id}"
     response = requests.get(url)
     
-    # Verificando erro 429 e esperando 60 segundos
+    # Handle HTTP 429 (Rate Limit Exceeded)
     if response.status_code == 429:
-        print(f"Limite de requisições atingido para {coin_id}. Aguardando 60 segundos...")
-        time.sleep(60)  # Aguardar 60 segundos
-        response = requests.get(url)  # Repetir a requisição após o delay
+        print(f"Rate limit reached for {coin_id}. Waiting 60 seconds...")
+        time.sleep(60)
+        response = requests.get(url)
     
     if response.status_code == 200:
         return response.json()
     else:
-        print(f"Erro ao acessar dados da moeda {coin_id}: Status Code {response.status_code}")
+        print(f"Error fetching data for {coin_id}: Status Code {response.status_code}")
         return None
 
-# Função para pegar dados históricos de preço
+# Function to get historical price data
 def get_historical_data(coin_id):
     url = f"https://api.coingecko.com/api/v3/coins/{coin_id}/market_chart"
     params = {'vs_currency': 'usd', 'days': '365'}
     response = requests.get(url, params=params)
     
-    # Verificando erro 429 e esperando 60 segundos
+    # Handle HTTP 429 (Rate Limit Exceeded)
     if response.status_code == 429:
-        print(f"Limite de requisições atingido para {coin_id}. Aguardando 60 segundos...")
-        time.sleep(60)  # Aguardar 60 segundos
-        response = requests.get(url, params=params)  # Repetir a requisição após o delay
+        print(f"Rate limit reached for {coin_id}. Waiting 60 seconds...")
+        time.sleep(60)
+        response = requests.get(url, params=params)
     
     if response.status_code == 200:
         return response.json()
     else:
-        print(f"Erro ao acessar dados históricos para {coin_id}: Status Code {response.status_code}")
+        print(f"Error fetching historical data for {coin_id}: Status Code {response.status_code}")
         return None
 
-# Lista das moedas
+# List of coins
 coins = ['bitcoin', 'ethereum', 'ripple', 'litecoin']
 
-# Criando listas para armazenar os dados
+# Creating lists to store data
 id_name_list = []
 metadata_list = []
 price_data_list = []
 
-# Extraindo dados para cada moeda
+# Extracting data for each coin
 for i, coin in enumerate(coins, start=1):
-    print(f"Extraindo dados para {coin}...")
+    print(f"Extracting data for {coin}...")
     try:
-        # Obtendo os dados gerais da moeda
+        # Fetch general data for the coin
         data = get_crypto_data(coin)
         if data is None:
             continue
         
-        # Obtendo os dados históricos de preço
+        # Fetch historical price data
         historical_data = get_historical_data(coin)
         if historical_data is None:
             continue
         
-        # Verificando se os dados gerais estão disponíveis
+        # Extracting metadata
         if 'market_data' in data:
             current_price = data['market_data']['current_price']['usd']
             market_cap = data['market_data']['market_cap']['usd']
@@ -72,7 +79,6 @@ for i, coin in enumerate(coins, start=1):
             total_supply = 'No data'
             max_supply = 'No data'
         
-        # Salvando os metadados
         metadata_list.append({
             'ID': i,
             'Coin': coin,
@@ -82,44 +88,41 @@ for i, coin in enumerate(coins, start=1):
             'Max Supply': max_supply
         })
         
-        # Salvando os dados históricos de preço
+        # Extracting historical prices
         if 'prices' in historical_data and historical_data['prices']:
             for price in historical_data['prices']:
-                timestamp = price[0]  # Mantendo o timestamp original (em milissegundos)
-                price_value = str(price[1]).replace(',', '.')  
+                timestamp = datetime.utcfromtimestamp(price[0] / 1000).strftime('%Y-%m-%d %H:%M:%S')
+                price_value = str(price[1]).replace(',', '.')
                 price_data_list.append({
                     'ID': i,
-                    'Date': timestamp,  # Mantendo o timestamp original
+                    'Date': timestamp,
                     'Price (USD)': price_value
                 })
         else:
-            print(f"Sem dados históricos para {coin} ou dados não disponíveis.")
+            print(f"No historical data for {coin} or data unavailable.")
         
-        # Salvando a lista de ID e Nome para a Planilha 1
+        # Saving ID and Name
         id_name_list.append({
             'ID': i,
             'Coin': coin
         })
 
-        print(f"Dados e metadados de {coin} salvos com sucesso.")
-        
-        # Adicionando uma pausa de 2 segundos entre as requisições
-        time.sleep(2)  # Espera 2 segundos antes de prosseguir para a próxima moeda
+        print(f"Data and metadata for {coin} successfully saved.")
+        time.sleep(2)  # Wait 2 seconds before the next request
         
     except KeyError as e:
-        print(f"Erro ao acessar dados de {coin}: {e}")
+        print(f"KeyError while accessing data for {coin}: {e}")
     except Exception as e:
-        print(f"Erro desconhecido ao acessar dados de {coin}: {e}")
+        print(f"Unknown error while accessing data for {coin}: {e}")
 
-# Convertendo as listas para DataFrames
+# Converting lists to DataFrames
 id_name_df = pd.DataFrame(id_name_list)
 metadata_df = pd.DataFrame(metadata_list)
 price_data_df = pd.DataFrame(price_data_list)
 
-# Salvando todos os dados em um arquivo Excel com 3 planilhas
-with pd.ExcelWriter('crypto_data.xlsx') as writer:
-    id_name_df.to_excel(writer, sheet_name='Coin_ID_and_Name', index=False)
-    metadata_df.to_excel(writer, sheet_name='Coin_Metadata', index=False)
-    price_data_df.to_excel(writer, sheet_name='Coin_Price_Data', index=False)
+# Saving all data to CSV files in the specified folder
+id_name_df.to_csv(os.path.join(output_folder, 'crypto_id_and_name.csv'), index=False)
+metadata_df.to_csv(os.path.join(output_folder, 'crypto_metadata.csv'), index=False)
+price_data_df.to_csv(os.path.join(output_folder, 'crypto_price_data.csv'), index=False)
 
-print("Todos os dados foram salvos com sucesso no arquivo 'crypto_data.xlsx'.")
+print(f"All data successfully saved in the folder: {output_folder}")

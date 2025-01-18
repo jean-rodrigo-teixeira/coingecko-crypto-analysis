@@ -1,5 +1,5 @@
 {
-  "compatibilityLevel": 1550,
+  "compatibilityLevel": 1567,
   "model": {
     "annotations": [
       {
@@ -9,6 +9,10 @@
       {
         "name": "PBIDesktopVersion",
         "value": "2.139.1678.0 (24.12)+2a034ab280bddf891eb7bb9ebfe6996f9c3a3196"
+      },
+      {
+        "name": "PBI_QueryOrder",
+        "value": "[\"crypto_price_data\",\"crypto_id_and_name\"]"
       },
       {
         "name": "PBI_ProTooling",
@@ -26,6 +30,212 @@
           },
           "contentType": "json"
         }
+      }
+    ],
+    "dataAccessOptions": {
+      "legacyRedirects": true,
+      "returnErrorValuesAsNull": true
+    },
+    "defaultPowerBIDataSourceVersion": "powerBI_V3",
+    "relationships": [
+      {
+        "name": "f97e3f3a-3db3-6f77-9a8f-072996b9bf45",
+        "fromColumn": "ID",
+        "fromTable": "crypto_price_data",
+        "toColumn": "ID",
+        "toTable": "crypto_id_and_name"
+      }
+    ],
+    "sourceQueryCulture": "en-US",
+    "tables": [
+      {
+        "name": "crypto_price_data",
+        "annotations": [
+          {
+            "name": "PBI_NavigationStepName",
+            "value": "Navigation"
+          },
+          {
+            "name": "PBI_ResultType",
+            "value": "Table"
+          }
+        ],
+        "changedProperties": [
+          {
+            "property": "Name"
+          }
+        ],
+        "columns": [
+          {
+            "name": "ID",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ],
+            "dataType": "int64",
+            "formatString": "0",
+            "lineageTag": "bc9c26cf-62c7-4c86-beb6-dfacb3514994",
+            "sourceColumn": "ID",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "Date",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              },
+              {
+                "name": "UnderlyingDateTimeDataType",
+                "value": "Date"
+              }
+            ],
+            "dataType": "dateTime",
+            "formatString": "Long Date",
+            "lineageTag": "d70bac22-e8e0-4e62-9a38-50ae361a6116",
+            "sourceColumn": "Date",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "Price (USD)",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              },
+              {
+                "name": "PBI_FormatHint",
+                "value": "{\"currencyCulture\":\"en-US\"}"
+              }
+            ],
+            "dataType": "decimal",
+            "formatString": "\\$#,0.###############;(\\$#,0.###############);\\$#,0.###############",
+            "lineageTag": "6748fdfe-7dcb-4cd3-85dd-c3f8cdc29f19",
+            "sourceColumn": "Price (USD)",
+            "summarizeBy": "sum"
+          }
+        ],
+        "lineageTag": "17c6be94-d8c0-4653-be0c-f4bfc239a79a",
+        "partitions": [
+          {
+            "name": "crypto_price_data",
+            "mode": "import",
+            "source": {
+              "expression": [
+                "let",
+                "    // Source: CSV file from Google Drive",
+                "    // The file is directly loaded using the public link from Google Drive in CSV format",
+                "    Source = Csv.Document(",
+                "        Web.Contents(\"https://drive.google.com/uc?id=1Zc8uFpZHPgJ_xgFp_bdBqJktLZd42DtQ&export=download\"), ",
+                "        [Delimiter=\",\", Columns=3, Encoding=65001, QuoteStyle=QuoteStyle.None]",
+                "    ),",
+                "    ",
+                "    // Promote the first row as headers",
+                "    // The first row of the CSV file will be used as column names",
+                "    #\"Promoted Headers\" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),",
+                "",
+                "    // Change data types of the columns",
+                "    // The 'ID' column is converted to Int64, 'Date' to datetime, and 'Price (USD)' to currency type",
+                "    #\"Changed Type\" = Table.TransformColumnTypes(",
+                "        #\"Promoted Headers\", ",
+                "        {{\"ID\", Int64.Type}, {\"Date\", type datetime}, {\"Price (USD)\", Currency.Type}}",
+                "    ),",
+                "",
+                "    // Filter rows where the time in the 'Date' column is exactly 12:00:00AM",
+                "    // Only rows where the time is midnight are kept",
+                "    #\"Filtered Rows\" = Table.SelectRows(",
+                "        #\"Changed Type\", ",
+                "        each DateTime.ToText([Date], \"HH:mm:ss\") = \"00:00:00\"",
+                "    ),",
+                "",
+                "    // Change the 'Date' column type to date only (removing the time part)",
+                "    // This removes the time, keeping only the date value",
+                "    #\"Changed Type1\" = Table.TransformColumnTypes(#\"Filtered Rows\", {{\"Date\", type date}})",
+                "in",
+                "    // Returns the final table with all transformations applied",
+                "    #\"Changed Type1\""
+              ],
+              "type": "m"
+            }
+          }
+        ]
+      },
+      {
+        "name": "crypto_id_and_name",
+        "annotations": [
+          {
+            "name": "PBI_NavigationStepName",
+            "value": "Navigation"
+          },
+          {
+            "name": "PBI_ResultType",
+            "value": "Table"
+          }
+        ],
+        "columns": [
+          {
+            "name": "ID",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ],
+            "dataType": "int64",
+            "formatString": "0",
+            "lineageTag": "d27dacdd-bcf6-4dc9-9ebe-af5ad853a85d",
+            "sourceColumn": "ID",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "Coin",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ],
+            "dataType": "string",
+            "lineageTag": "23018f32-baa7-4a1d-8843-b0b1bc45818f",
+            "sourceColumn": "Coin",
+            "summarizeBy": "none"
+          }
+        ],
+        "lineageTag": "a81679a2-b180-48ab-9907-5aa236677d0f",
+        "partitions": [
+          {
+            "name": "crypto_id_and_name",
+            "mode": "import",
+            "source": {
+              "expression": [
+                "let",
+                "    // Source: CSV file from Google Drive",
+                "    // The file is directly loaded using the public link from Google Drive in CSV format",
+                "    Source = Csv.Document(",
+                "        Web.Contents(\"https://drive.google.com/uc?id=1G7iAckxC7_xWpp0_Nv-nKSCBkzjTIwX3&export=download\"), ",
+                "        [Delimiter=\",\", Columns=2, Encoding=65001, QuoteStyle=QuoteStyle.None]",
+                "    ),",
+                "    ",
+                "    // Promote the first row as headers",
+                "    // The first row of the CSV file will be used as column names",
+                "    #\"Promoted Headers\" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),",
+                "",
+                "    // Change data types of the columns",
+                "    // The 'ID' column is converted to Int64 and the 'Coin' column to text",
+                "    #\"Changed Type\" = Table.TransformColumnTypes(",
+                "        #\"Promoted Headers\", ",
+                "        {{\"ID\", Int64.Type}, {\"Coin\", type text}}",
+                "    )",
+                "in",
+                "    // Returns the final table with all transformations applied",
+                "    #\"Changed Type\""
+              ],
+              "type": "m"
+            }
+          }
+        ]
       }
     ]
   }
