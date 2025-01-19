@@ -8,11 +8,11 @@
       },
       {
         "name": "PBIDesktopVersion",
-        "value": "2.139.1678.0 (24.12)+2a034ab280bddf891eb7bb9ebfe6996f9c3a3196"
+        "value": "2.132.1053.0 (24.08)"
       },
       {
         "name": "PBI_QueryOrder",
-        "value": "[\"crypto_price_data\",\"crypto_id_and_name\"]"
+        "value": "[\"f_crypto_price_data\",\"d_crypto_id_and_name\",\"d_calendar\"]"
       },
       {
         "name": "PBI_ProTooling",
@@ -37,19 +37,55 @@
       "returnErrorValuesAsNull": true
     },
     "defaultPowerBIDataSourceVersion": "powerBI_V3",
+    "queryGroups": [
+      {
+        "annotations": [
+          {
+            "name": "PBI_QueryGroupOrder",
+            "value": "0"
+          }
+        ],
+        "folder": "dimensions"
+      },
+      {
+        "annotations": [
+          {
+            "name": "PBI_QueryGroupOrder",
+            "value": "1"
+          }
+        ],
+        "folder": "facts"
+      },
+      {
+        "annotations": [
+          {
+            "name": "PBI_QueryGroupOrder",
+            "value": "2"
+          }
+        ],
+        "folder": "auxiliaries"
+      }
+    ],
     "relationships": [
       {
         "name": "f97e3f3a-3db3-6f77-9a8f-072996b9bf45",
         "fromColumn": "ID",
-        "fromTable": "crypto_price_data",
+        "fromTable": "f_crypto_price_data",
         "toColumn": "ID",
-        "toTable": "crypto_id_and_name"
+        "toTable": "d_crypto_id_and_name"
+      },
+      {
+        "name": "5942e4d0-dab0-232e-fb4e-a3f99a745d6f",
+        "fromColumn": "Date",
+        "fromTable": "f_crypto_price_data",
+        "toColumn": "Date",
+        "toTable": "d_calendar"
       }
     ],
     "sourceQueryCulture": "en-US",
     "tables": [
       {
-        "name": "crypto_price_data",
+        "name": "f_crypto_price_data",
         "annotations": [
           {
             "name": "PBI_NavigationStepName",
@@ -120,8 +156,9 @@
         "lineageTag": "17c6be94-d8c0-4653-be0c-f4bfc239a79a",
         "partitions": [
           {
-            "name": "crypto_price_data",
+            "name": "f_crypto_price_data",
             "mode": "import",
+            "queryGroup": "facts",
             "source": {
               "expression": [
                 "let",
@@ -163,7 +200,7 @@
         ]
       },
       {
-        "name": "crypto_id_and_name",
+        "name": "d_crypto_id_and_name",
         "annotations": [
           {
             "name": "PBI_NavigationStepName",
@@ -185,6 +222,7 @@
             ],
             "dataType": "int64",
             "formatString": "0",
+            "isDefaultLabel": true,
             "lineageTag": "d27dacdd-bcf6-4dc9-9ebe-af5ad853a85d",
             "sourceColumn": "ID",
             "summarizeBy": "none"
@@ -206,8 +244,9 @@
         "lineageTag": "a81679a2-b180-48ab-9907-5aa236677d0f",
         "partitions": [
           {
-            "name": "crypto_id_and_name",
+            "name": "d_crypto_id_and_name",
             "mode": "import",
+            "queryGroup": "dimensions",
             "source": {
               "expression": [
                 "let",
@@ -231,6 +270,205 @@
                 "in",
                 "    // Returns the final table with all transformations applied",
                 "    #\"Changed Type\""
+              ],
+              "type": "m"
+            }
+          }
+        ]
+      },
+      {
+        "name": "d_calendar",
+        "annotations": [
+          {
+            "name": "PBI_NavigationStepName",
+            "value": "Navigation"
+          },
+          {
+            "name": "PBI_ResultType",
+            "value": "Table"
+          }
+        ],
+        "columns": [
+          {
+            "name": "Date",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              },
+              {
+                "name": "UnderlyingDateTimeDataType",
+                "value": "Date"
+              }
+            ],
+            "dataType": "dateTime",
+            "formatString": "Long Date",
+            "isDefaultLabel": true,
+            "isKey": true,
+            "lineageTag": "a1365db1-a6af-4b1d-8e0d-86210af55ace",
+            "sourceColumn": "Date",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "Day",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ],
+            "dataType": "int64",
+            "formatString": "0",
+            "lineageTag": "6b3f5897-ad20-4443-b8b9-21a1cce218a0",
+            "sourceColumn": "Day",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "Week",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ],
+            "dataType": "string",
+            "lineageTag": "73589f35-1a5e-4a3a-85ef-e470e14187b1",
+            "sourceColumn": "Week",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "Week Abbrev",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ],
+            "dataType": "string",
+            "lineageTag": "1d00d541-6fa9-4a5e-b222-9e18bc2078d5",
+            "sourceColumn": "Week Abbrev",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "Month Name",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ],
+            "dataType": "string",
+            "lineageTag": "dc2dfad7-72c2-4075-906f-759d9f5b9ac1",
+            "sourceColumn": "Month Name",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "Quarter",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ],
+            "dataType": "string",
+            "lineageTag": "48e7fbb7-d47d-4ad6-b2a6-0b393fe29e91",
+            "sourceColumn": "Quarter",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "Year",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ],
+            "dataType": "int64",
+            "formatString": "0",
+            "lineageTag": "73bd66ee-06c1-41e7-b38d-89812fee72e3",
+            "sourceColumn": "Year",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "YearMonthSeq",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ],
+            "dataType": "int64",
+            "formatString": "0",
+            "lineageTag": "8c95957b-9ec2-434e-8be3-c9af78464666",
+            "sourceColumn": "YearMonthSeq",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "MonthYear",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ],
+            "dataType": "string",
+            "lineageTag": "fb42120a-89b4-40a6-a3cf-4fac913d6b1c",
+            "sourceColumn": "MonthYear",
+            "summarizeBy": "none"
+          }
+        ],
+        "dataCategory": "Time",
+        "lineageTag": "9ec220d0-c966-484d-b021-5429419dee80",
+        "partitions": [
+          {
+            "name": "d_calendar",
+            "mode": "import",
+            "queryGroup": "dimensions",
+            "source": {
+              "expression": [
+                "let",
+                "    // Start Date",
+                "    StartDate = #date(2025,1,1),",
+                "    // End date of the calendar:",
+                "    // Last date of the next year --> Date.AddYears(Date.EndOfYear(Date.From(DateTime.LocalNow())),1),",
+                "    // Last date of the current year --> Date.EndOfYear(Date.From(DateTime.LocalNow())),",
+                "    // Last date of the current month --> Date.EndOfMonth(Date.From(DateTime.LocalNow())),",
+                "    // Today --> Date.From(DateTime.LocalNow()),",
+                "    EndDate = Date.EndOfYear(Date.From(DateTime.LocalNow())), // Last date of the current year",
+                "    // Number of days between StartDate and EndDate",
+                "    NumberOfDays = Duration.TotalDays(EndDate-StartDate)+1,",
+                "    // List of Dates",
+                "    Source = List.Dates(StartDate,NumberOfDays,#duration(1,0,0,0)),",
+                "    // Calendar Table",
+                "    CalendarTable = #table(",
+                "        type table[",
+                "            Date=date, ",
+                "            Day=Int64.Type,  ",
+                "            Week = text, ",
+                "            Week Abbrev = text, ",
+                "            Month Name= text, ",
+                "            Quarter = text,  ",
+                "            Year = Int64.Type,  ",
+                "            YearMonthSeq = Int64.Type, ",
+                "            MonthYear = text",
+                "        ],",
+                "        List.Transform(",
+                "            Source, ",
+                "            each {",
+                "                _, // Date 01/01/2025, 02/01/2025, ...",
+                "                Date.Day(_), // Day 1, 2, 3...",
+                "                Text.Repeat(Character.FromNumber(8203), 7 - Date.DayOfWeek(_)) & Text.BeforeDelimiter(Text.Proper(Date.ToText(_,\"dddd\", \"en-US\")),\"-\"), // Full Weekday Name Monday, Tuesday, Wednesday, ...",
+                "                Text.Repeat(Character.FromNumber(8203), 7 - Date.DayOfWeek(_)) & Text.Proper(Date.ToText(_,\"ddd\", \"en-US\")), // Abbreviated Weekday Name Mon, Tue, Wed, ...",
+                "                Text.Repeat(Character.FromNumber(8203), 12 - Date.Month(_)) & Text.Proper(Date.ToText(_,\"MMM\", \"en-US\")), // Month Name Jan, Feb, Mar,",
+                "                \"Q\" & Text.From(Date.QuarterOfYear(_)), // Quarter Q1, Q2, Q3, Q4",
+                "                Date.Year(_), // Year 2021, 2022, ...",
+                "                12 * Date.Year(_) + Date.Month(_) - 1, // Sequential Year/Month Number 24287, 24286, ...",
+                "                Text.Proper(Date.ToText(_,\"MMM/yyyy\")) // Month Year Jan/2022, Feb/2022, ...",
+                "            }",
+                "        )",
+                "    )",
+                "in",
+                "    CalendarTable"
               ],
               "type": "m"
             }

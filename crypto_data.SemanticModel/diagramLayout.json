@@ -10,28 +10,43 @@
       "nodes": [
         {
           "location": {
-            "x": 0,
+            "x": 519,
             "y": 0
           },
-          "nodeIndex": "crypto_price_data",
+          "nodeIndex": "d_crypto_id_and_name",
+          "nodeLineageTag": "a81679a2-b180-48ab-9907-5aa236677d0f",
+          "size": {
+            "height": 104,
+            "width": 234
+          },
+          "zIndex": 2,
+          "expandedHeight": 128
+        },
+        {
+          "location": {
+            "x": 246,
+            "y": 166
+          },
+          "nodeIndex": "f_crypto_price_data",
+          "nodeLineageTag": "17c6be94-d8c0-4653-be0c-f4bfc239a79a",
           "size": {
             "height": 152,
             "width": 234
           },
-          "zIndex": 0
+          "zIndex": 1
         },
         {
           "location": {
-            "x": 513,
-            "y": 68
+            "x": 0,
+            "y": 0
           },
-          "nodeIndex": "crypto_id_and_name",
-          "nodeLineageTag": "a81679a2-b180-48ab-9907-5aa236677d0f",
+          "nodeIndex": "d_calendar",
           "size": {
-            "height": 128,
+            "height": 104,
             "width": 234
           },
-          "zIndex": 0
+          "zIndex": 3,
+          "expandedHeight": 296
         }
       ],
       "name": "All tables",
