@@ -25,7 +25,17 @@
       "filters": "[]",
       "height": 720.00,
       "name": "6d4715b6e2401be73d2f",
-      "visualContainers": [],
+      "visualContainers": [
+        {
+          "config": "{\"name\":\"71d87baf31c3c4b467ca\",\"layouts\":[{\"id\":0,\"position\":{\"x\":10,\"y\":0,\"width\":280,\"height\":280,\"z\":0,\"tabOrder\":0}}],\"singleVisual\":{\"visualType\":\"card\",\"projections\":{\"Values\":[{\"queryRef\":\"aux_measures.Average Price\"}]},\"prototypeQuery\":{\"Version\":2,\"From\":[{\"Name\":\"a\",\"Entity\":\"aux_measures\",\"Type\":0}],\"Select\":[{\"Measure\":{\"Expression\":{\"SourceRef\":{\"Source\":\"a\"}},\"Property\":\"Average Price\"},\"Name\":\"aux_measures.Average Price\",\"NativeReferenceName\":\"Average Price\"}],\"OrderBy\":[{\"Direction\":2,\"Expression\":{\"Measure\":{\"Expression\":{\"SourceRef\":{\"Source\":\"a\"}},\"Property\":\"Average Price\"}}}]},\"drillFilterOtherVisuals\":true,\"hasDefaultSort\":true}}",
+          "filters": "[]",
+          "height": 280.00,
+          "width": 280.00,
+          "x": 10.00,
+          "y": 0.00,
+          "z": 0.00
+        }
+      ],
       "width": 1280.00
     }
   ]

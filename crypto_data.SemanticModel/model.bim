@@ -12,7 +12,7 @@
       },
       {
         "name": "PBI_QueryOrder",
-        "value": "[\"f_crypto_price_data\",\"d_crypto_id_and_name\",\"d_calendar\"]"
+        "value": "[\"fact_crypto_price_data\",\"dim_crypto_id_and_name\",\"dim_calendar\",\"aux_measures\"]"
       },
       {
         "name": "PBI_ProTooling",
@@ -70,22 +70,22 @@
       {
         "name": "f97e3f3a-3db3-6f77-9a8f-072996b9bf45",
         "fromColumn": "ID",
-        "fromTable": "f_crypto_price_data",
+        "fromTable": "fact_crypto_price_data",
         "toColumn": "ID",
-        "toTable": "d_crypto_id_and_name"
+        "toTable": "dim_crypto_id_and_name"
       },
       {
         "name": "5942e4d0-dab0-232e-fb4e-a3f99a745d6f",
         "fromColumn": "Date",
-        "fromTable": "f_crypto_price_data",
+        "fromTable": "fact_crypto_price_data",
         "toColumn": "Date",
-        "toTable": "d_calendar"
+        "toTable": "dim_calendar"
       }
     ],
     "sourceQueryCulture": "en-US",
     "tables": [
       {
-        "name": "f_crypto_price_data",
+        "name": "fact_crypto_price_data",
         "annotations": [
           {
             "name": "PBI_NavigationStepName",
@@ -156,7 +156,7 @@
         "lineageTag": "17c6be94-d8c0-4653-be0c-f4bfc239a79a",
         "partitions": [
           {
-            "name": "f_crypto_price_data",
+            "name": "fact_crypto_price_data",
             "mode": "import",
             "queryGroup": "facts",
             "source": {
@@ -200,7 +200,7 @@
         ]
       },
       {
-        "name": "d_crypto_id_and_name",
+        "name": "dim_crypto_id_and_name",
         "annotations": [
           {
             "name": "PBI_NavigationStepName",
@@ -209,6 +209,11 @@
           {
             "name": "PBI_ResultType",
             "value": "Table"
+          }
+        ],
+        "changedProperties": [
+          {
+            "property": "Name"
           }
         ],
         "columns": [
@@ -244,7 +249,7 @@
         "lineageTag": "a81679a2-b180-48ab-9907-5aa236677d0f",
         "partitions": [
           {
-            "name": "d_crypto_id_and_name",
+            "name": "dim_crypto_id_and_name",
             "mode": "import",
             "queryGroup": "dimensions",
             "source": {
@@ -277,7 +282,7 @@
         ]
       },
       {
-        "name": "d_calendar",
+        "name": "dim_calendar",
         "annotations": [
           {
             "name": "PBI_NavigationStepName",
@@ -286,6 +291,11 @@
           {
             "name": "PBI_ResultType",
             "value": "Table"
+          }
+        ],
+        "changedProperties": [
+          {
+            "property": "Name"
           }
         ],
         "columns": [
@@ -421,7 +431,7 @@
         "lineageTag": "9ec220d0-c966-484d-b021-5429419dee80",
         "partitions": [
           {
-            "name": "d_calendar",
+            "name": "dim_calendar",
             "mode": "import",
             "queryGroup": "dimensions",
             "source": {
@@ -469,6 +479,54 @@
                 "    )",
                 "in",
                 "    CalendarTable"
+              ],
+              "type": "m"
+            }
+          }
+        ]
+      },
+      {
+        "name": "aux_measures",
+        "annotations": [
+          {
+            "name": "PBI_ResultType",
+            "value": "Table"
+          }
+        ],
+        "lineageTag": "d650f732-a3b8-458d-b74d-d311cb078245",
+        "measures": [
+          {
+            "name": "Average Price",
+            "annotations": [
+              {
+                "name": "PBI_FormatHint",
+                "value": "{\"currencyCulture\":\"en-US\"}"
+              }
+            ],
+            "expression": [
+              "",
+              "AVERAGEX(",
+              "    fact_crypto_price_data,",
+              "    fact_crypto_price_data[Price (USD)]",
+              ")",
+              ""
+            ],
+            "formatString": "\\$#,0.###############;(\\$#,0.###############);\\$#,0.###############",
+            "lineageTag": "048923ea-5eca-45e6-ae89-85b6f29fdc2a"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "aux_measures",
+            "mode": "import",
+            "source": {
+              "expression": [
+                "let",
+                "    Source = Table.FromRows(Json.Document(Binary.Decompress(Binary.FromText(\"i44FAA==\", BinaryEncoding.Base64), Compression.Deflate)), let _t = ((type nullable text) meta [Serialized.Text = true]) in type table [#\"Coluna 1\" = _t]),",
+                "    #\"Changed Type\" = Table.TransformColumnTypes(Source,{{\"Coluna 1\", type text}}),",
+                "    #\"Removed Columns\" = Table.RemoveColumns(#\"Changed Type\",{\"Coluna 1\"})",
+                "in",
+                "    #\"Removed Columns\""
               ],
               "type": "m"
             }

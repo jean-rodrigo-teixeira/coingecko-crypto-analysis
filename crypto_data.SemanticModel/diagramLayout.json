@@ -10,16 +10,41 @@
       "nodes": [
         {
           "location": {
-            "x": 519,
-            "y": 0
+            "x": 803,
+            "y": 107
           },
-          "nodeIndex": "d_crypto_id_and_name",
-          "nodeLineageTag": "a81679a2-b180-48ab-9907-5aa236677d0f",
+          "nodeIndex": "aux_measures",
+          "nodeLineageTag": "d650f732-a3b8-458d-b74d-d311cb078245",
           "size": {
             "height": 104,
             "width": 234
           },
-          "zIndex": 2,
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 0,
+            "y": 0
+          },
+          "nodeIndex": "dim_calendar",
+          "size": {
+            "height": 104,
+            "width": 234
+          },
+          "zIndex": 0,
+          "expandedHeight": 296
+        },
+        {
+          "location": {
+            "x": 519,
+            "y": 0
+          },
+          "nodeIndex": "dim_crypto_id_and_name",
+          "size": {
+            "height": 104,
+            "width": 234
+          },
+          "zIndex": 0,
           "expandedHeight": 128
         },
         {
@@ -27,26 +52,12 @@
             "x": 246,
             "y": 166
           },
-          "nodeIndex": "f_crypto_price_data",
-          "nodeLineageTag": "17c6be94-d8c0-4653-be0c-f4bfc239a79a",
+          "nodeIndex": "fact_crypto_price_data",
           "size": {
             "height": 152,
             "width": 234
           },
-          "zIndex": 1
-        },
-        {
-          "location": {
-            "x": 0,
-            "y": 0
-          },
-          "nodeIndex": "d_calendar",
-          "size": {
-            "height": 104,
-            "width": 234
-          },
-          "zIndex": 3,
-          "expandedHeight": 296
+          "zIndex": 0
         }
       ],
       "name": "All tables",
