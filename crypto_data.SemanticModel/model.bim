@@ -496,6 +496,21 @@
         "lineageTag": "d650f732-a3b8-458d-b74d-d311cb078245",
         "measures": [
           {
+            "name": "Max Price",
+            "annotations": [
+              {
+                "name": "PBI_FormatHint",
+                "value": "{\"currencyCulture\":\"en-US\"}"
+              }
+            ],
+            "expression": [
+              "",
+              "MAX(fact_crypto_price_data[Price (USD)])"
+            ],
+            "formatString": "\\$#,0.###############;(\\$#,0.###############);\\$#,0.###############",
+            "lineageTag": "3a77e333-8eb3-4d1d-ae27-5565612c0a89"
+          },
+          {
             "name": "Average Price",
             "annotations": [
               {
@@ -505,14 +520,26 @@
             ],
             "expression": [
               "",
-              "AVERAGEX(",
-              "    fact_crypto_price_data,",
-              "    fact_crypto_price_data[Price (USD)]",
-              ")",
+              "AVERAGE(fact_crypto_price_data[Price (USD)])",
               ""
             ],
             "formatString": "\\$#,0.###############;(\\$#,0.###############);\\$#,0.###############",
-            "lineageTag": "048923ea-5eca-45e6-ae89-85b6f29fdc2a"
+            "lineageTag": "1bb53d0d-9907-4168-a4e6-f0897600d160"
+          },
+          {
+            "name": "Min Price",
+            "annotations": [
+              {
+                "name": "PBI_FormatHint",
+                "value": "{\"currencyCulture\":\"en-US\"}"
+              }
+            ],
+            "expression": [
+              "",
+              "MIN(fact_crypto_price_data[Price (USD)])"
+            ],
+            "formatString": "\\$#,0.###############;(\\$#,0.###############);\\$#,0.###############",
+            "lineageTag": "48770a8a-54b0-47f7-86ee-3e025171fee8"
           }
         ],
         "partitions": [
