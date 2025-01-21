@@ -423,6 +423,32 @@
           }
         ],
         "dataCategory": "Time",
+        "hierarchies": [
+          {
+            "name": "Date Hierarchy",
+            "levels": [
+              {
+                "name": "Year",
+                "column": "Year",
+                "lineageTag": "776fd290-097f-481c-b91b-ee74c88231e3",
+                "ordinal": 0
+              },
+              {
+                "name": "Month Name",
+                "column": "Month Name",
+                "lineageTag": "c75000f7-ae4a-4006-b060-d9a1817dfffe",
+                "ordinal": 1
+              },
+              {
+                "name": "Day",
+                "column": "Day",
+                "lineageTag": "fe953b7e-bc12-48f6-b6e8-4b76830ce52f",
+                "ordinal": 2
+              }
+            ],
+            "lineageTag": "0376b92c-c44d-4e67-a593-ea1f359b2714"
+          }
+        ],
         "lineageTag": "9ec220d0-c966-484d-b021-5429419dee80",
         "partitions": [
           {
