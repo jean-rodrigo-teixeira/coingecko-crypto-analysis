@@ -293,11 +293,6 @@
             "value": "Table"
           }
         ],
-        "changedProperties": [
-          {
-            "property": "Name"
-          }
-        ],
         "columns": [
           {
             "name": "Date",
@@ -438,7 +433,7 @@
               "expression": [
                 "let",
                 "    // Start Date",
-                "    StartDate = #date(2025,1,1),",
+                "    StartDate = #date(2024,1,1),",
                 "    // End date of the calendar:",
                 "    // Last date of the next year --> Date.AddYears(Date.EndOfYear(Date.From(DateTime.LocalNow())),1),",
                 "    // Last date of the current year --> Date.EndOfYear(Date.From(DateTime.LocalNow())),",
@@ -491,6 +486,10 @@
           {
             "name": "PBI_ResultType",
             "value": "Table"
+          },
+          {
+            "name": "PBI_NavigationStepName",
+            "value": "Navigation"
           }
         ],
         "lineageTag": "d650f732-a3b8-458d-b74d-d311cb078245",
@@ -546,6 +545,7 @@
           {
             "name": "aux_measures",
             "mode": "import",
+            "queryGroup": "auxiliaries",
             "source": {
               "expression": [
                 "let",
