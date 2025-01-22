@@ -12,7 +12,7 @@
       },
       {
         "name": "PBI_QueryOrder",
-        "value": "[\"fact_crypto_price_data\",\"dim_crypto_id_and_name\",\"dim_calendar\",\"aux_measures\"]"
+        "value": "[\"fact_crypto_price_data\",\"dim_crypto_id_and_name\",\"dim_calendar\",\"aux_measures\",\"Table 1\"]"
       },
       {
         "name": "PBI_ProTooling",
@@ -580,6 +580,135 @@
                 "    #\"Removed Columns\" = Table.RemoveColumns(#\"Changed Type\",{\"Coluna 1\"})",
                 "in",
                 "    #\"Removed Columns\""
+              ],
+              "type": "m"
+            }
+          }
+        ]
+      },
+      {
+        "name": "Table 1",
+        "annotations": [
+          {
+            "name": "PBI_ResultType",
+            "value": "Table"
+          }
+        ],
+        "columns": [
+          {
+            "name": "Data",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ],
+            "dataType": "string",
+            "lineageTag": "7f8278aa-5c0c-48dd-8430-760fae5b4c8b",
+            "sourceColumn": "Data",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "Último",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ],
+            "dataType": "int64",
+            "formatString": "0",
+            "lineageTag": "431fd8a8-e228-4093-8652-a4624e61b97f",
+            "sourceColumn": "Último",
+            "summarizeBy": "sum"
+          },
+          {
+            "name": "Abertura",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ],
+            "dataType": "int64",
+            "formatString": "0",
+            "lineageTag": "4d99d0ae-b869-44fa-bfba-e122e125e4de",
+            "sourceColumn": "Abertura",
+            "summarizeBy": "sum"
+          },
+          {
+            "name": "Máxima",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ],
+            "dataType": "int64",
+            "formatString": "0",
+            "lineageTag": "611dee4f-3834-4aad-a4e1-b66c332539dd",
+            "sourceColumn": "Máxima",
+            "summarizeBy": "sum"
+          },
+          {
+            "name": "Mínima",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ],
+            "dataType": "int64",
+            "formatString": "0",
+            "lineageTag": "3c7acea2-91de-4ddf-bff3-77b01dd096f3",
+            "sourceColumn": "Mínima",
+            "summarizeBy": "sum"
+          },
+          {
+            "name": "Vol.",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ],
+            "dataType": "string",
+            "lineageTag": "3dd69e9c-2ada-4e73-9620-a38798a7ca88",
+            "sourceColumn": "Vol.",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "Var%",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              },
+              {
+                "name": "PBI_FormatHint",
+                "value": "{\"isGeneralNumber\":true}"
+              }
+            ],
+            "dataType": "double",
+            "lineageTag": "ffdf0a8e-7e86-496e-bf65-23095991f513",
+            "sourceColumn": "Var%",
+            "summarizeBy": "sum"
+          }
+        ],
+        "lineageTag": "32c17290-896b-4f90-a900-e7566f753cea",
+        "partitions": [
+          {
+            "name": "Table 1",
+            "mode": "import",
+            "source": {
+              "expression": [
+                "let",
+                "    Source = Web.BrowserContents(\"https://drive.google.com/file/d/1Ia4xxCkdpATsZm3yntbAF2qVgAOom0XT/view?usp=sharing\"),",
+                "    #\"Extracted Table From Html\" = Html.Table(Source, {{\"Column1\", \"TABLE.ndfHFb-c4YZDc-hDEnYe-Df1ZY-bN97Pc > * > TR > :nth-child(1)\"}, {\"Column2\", \"TABLE.ndfHFb-c4YZDc-hDEnYe-Df1ZY-bN97Pc > * > TR > :nth-child(2)\"}, {\"Column3\", \"TABLE.ndfHFb-c4YZDc-hDEnYe-Df1ZY-bN97Pc > * > TR > :nth-child(3)\"}, {\"Column4\", \"TABLE.ndfHFb-c4YZDc-hDEnYe-Df1ZY-bN97Pc > * > TR > :nth-child(4)\"}, {\"Column5\", \"TABLE.ndfHFb-c4YZDc-hDEnYe-Df1ZY-bN97Pc > * > TR > :nth-child(5)\"}, {\"Column6\", \"TABLE.ndfHFb-c4YZDc-hDEnYe-Df1ZY-bN97Pc > * > TR > :nth-child(6)\"}, {\"Column7\", \"TABLE.ndfHFb-c4YZDc-hDEnYe-Df1ZY-bN97Pc > * > TR > :nth-child(7)\"}}, [RowSelector=\"TABLE.ndfHFb-c4YZDc-hDEnYe-Df1ZY-bN97Pc > * > TR\"]),",
+                "    #\"Promoted Headers\" = Table.PromoteHeaders(#\"Extracted Table From Html\", [PromoteAllScalars=true]),",
+                "    #\"Changed Type\" = Table.TransformColumnTypes(#\"Promoted Headers\",{{\"Data\", type text}, {\"Último\", Int64.Type}, {\"Abertura\", Int64.Type}, {\"Máxima\", Int64.Type}, {\"Mínima\", Int64.Type}, {\"Vol.\", type text}, {\"Var%\", Percentage.Type}})",
+                "in",
+                "    #\"Changed Type\""
               ],
               "type": "m"
             }
