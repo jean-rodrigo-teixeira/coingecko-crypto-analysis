@@ -64,8 +64,7 @@
             "x": 1087,
             "y": 35
           },
-          "nodeIndex": "Table 1",
-          "nodeLineageTag": "32c17290-896b-4f90-a900-e7566f753cea",
+          "nodeIndex": "historical_bitcoin_price_data",
           "size": {
             "height": 248,
             "width": 234

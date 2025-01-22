@@ -12,7 +12,7 @@
       },
       {
         "name": "PBI_QueryOrder",
-        "value": "[\"fact_crypto_price_data\",\"dim_crypto_id_and_name\",\"dim_calendar\",\"aux_measures\",\"Table 1\"]"
+        "value": "[\"fact_crypto_price_data\",\"dim_crypto_id_and_name\",\"dim_calendar\",\"aux_measures\",\"historical_bitcoin_price_data\"]"
       },
       {
         "name": "PBI_ProTooling",
@@ -587,11 +587,15 @@
         ]
       },
       {
-        "name": "Table 1",
+        "name": "historical_bitcoin_price_data",
         "annotations": [
           {
             "name": "PBI_ResultType",
             "value": "Table"
+          },
+          {
+            "name": "PBI_NavigationStepName",
+            "value": "Navigation"
           }
         ],
         "columns": [
@@ -616,11 +620,10 @@
                 "value": "Automatic"
               }
             ],
-            "dataType": "int64",
-            "formatString": "0",
+            "dataType": "string",
             "lineageTag": "431fd8a8-e228-4093-8652-a4624e61b97f",
             "sourceColumn": "Último",
-            "summarizeBy": "sum"
+            "summarizeBy": "none"
           },
           {
             "name": "Abertura",
@@ -630,11 +633,10 @@
                 "value": "Automatic"
               }
             ],
-            "dataType": "int64",
-            "formatString": "0",
+            "dataType": "string",
             "lineageTag": "4d99d0ae-b869-44fa-bfba-e122e125e4de",
             "sourceColumn": "Abertura",
-            "summarizeBy": "sum"
+            "summarizeBy": "none"
           },
           {
             "name": "Máxima",
@@ -644,11 +646,10 @@
                 "value": "Automatic"
               }
             ],
-            "dataType": "int64",
-            "formatString": "0",
+            "dataType": "string",
             "lineageTag": "611dee4f-3834-4aad-a4e1-b66c332539dd",
             "sourceColumn": "Máxima",
-            "summarizeBy": "sum"
+            "summarizeBy": "none"
           },
           {
             "name": "Mínima",
@@ -658,11 +659,10 @@
                 "value": "Automatic"
               }
             ],
-            "dataType": "int64",
-            "formatString": "0",
+            "dataType": "string",
             "lineageTag": "3c7acea2-91de-4ddf-bff3-77b01dd096f3",
             "sourceColumn": "Mínima",
-            "summarizeBy": "sum"
+            "summarizeBy": "none"
           },
           {
             "name": "Vol.",
@@ -683,32 +683,32 @@
               {
                 "name": "SummarizationSetBy",
                 "value": "Automatic"
-              },
-              {
-                "name": "PBI_FormatHint",
-                "value": "{\"isGeneralNumber\":true}"
               }
             ],
-            "dataType": "double",
+            "dataType": "string",
             "lineageTag": "ffdf0a8e-7e86-496e-bf65-23095991f513",
             "sourceColumn": "Var%",
-            "summarizeBy": "sum"
+            "summarizeBy": "none"
           }
         ],
         "lineageTag": "32c17290-896b-4f90-a900-e7566f753cea",
         "partitions": [
           {
-            "name": "Table 1",
+            "name": "historical_bitcoin_price_data",
             "mode": "import",
             "source": {
               "expression": [
                 "let",
-                "    Source = Web.BrowserContents(\"https://drive.google.com/file/d/1Ia4xxCkdpATsZm3yntbAF2qVgAOom0XT/view?usp=sharing\"),",
-                "    #\"Extracted Table From Html\" = Html.Table(Source, {{\"Column1\", \"TABLE.ndfHFb-c4YZDc-hDEnYe-Df1ZY-bN97Pc > * > TR > :nth-child(1)\"}, {\"Column2\", \"TABLE.ndfHFb-c4YZDc-hDEnYe-Df1ZY-bN97Pc > * > TR > :nth-child(2)\"}, {\"Column3\", \"TABLE.ndfHFb-c4YZDc-hDEnYe-Df1ZY-bN97Pc > * > TR > :nth-child(3)\"}, {\"Column4\", \"TABLE.ndfHFb-c4YZDc-hDEnYe-Df1ZY-bN97Pc > * > TR > :nth-child(4)\"}, {\"Column5\", \"TABLE.ndfHFb-c4YZDc-hDEnYe-Df1ZY-bN97Pc > * > TR > :nth-child(5)\"}, {\"Column6\", \"TABLE.ndfHFb-c4YZDc-hDEnYe-Df1ZY-bN97Pc > * > TR > :nth-child(6)\"}, {\"Column7\", \"TABLE.ndfHFb-c4YZDc-hDEnYe-Df1ZY-bN97Pc > * > TR > :nth-child(7)\"}}, [RowSelector=\"TABLE.ndfHFb-c4YZDc-hDEnYe-Df1ZY-bN97Pc > * > TR\"]),",
-                "    #\"Promoted Headers\" = Table.PromoteHeaders(#\"Extracted Table From Html\", [PromoteAllScalars=true]),",
-                "    #\"Changed Type\" = Table.TransformColumnTypes(#\"Promoted Headers\",{{\"Data\", type text}, {\"Último\", Int64.Type}, {\"Abertura\", Int64.Type}, {\"Máxima\", Int64.Type}, {\"Mínima\", Int64.Type}, {\"Vol.\", type text}, {\"Var%\", Percentage.Type}})",
+                "    // Fonte: Arquivo CSV do Google Drive",
+                "    Source = Csv.Document(",
+                "        Web.Contents(\"https://drive.google.com/uc?id=1Ia4xxCkdpATsZm3yntbAF2qVgAOom0XT&export=download\"), ",
+                "        [Delimiter=\",\", Columns=7, Encoding=65001, QuoteStyle=QuoteStyle.None]",
+                "    ),",
+                "    ",
+                "    // Promover a primeira linha como cabeçalhos",
+                "    #\"Promoted Headers\" = Table.PromoteHeaders(Source, [PromoteAllScalars=true])",
                 "in",
-                "    #\"Changed Type\""
+                "    #\"Promoted Headers\""
               ],
               "type": "m"
             }
