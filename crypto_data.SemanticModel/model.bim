@@ -600,95 +600,128 @@
         ],
         "columns": [
           {
-            "name": "Data",
+            "name": "Date",
             "annotations": [
               {
                 "name": "SummarizationSetBy",
                 "value": "Automatic"
+              },
+              {
+                "name": "UnderlyingDateTimeDataType",
+                "value": "Date"
               }
             ],
-            "dataType": "string",
-            "lineageTag": "7f8278aa-5c0c-48dd-8430-760fae5b4c8b",
-            "sourceColumn": "Data",
+            "dataType": "dateTime",
+            "formatString": "Long Date",
+            "lineageTag": "ca16c7cf-1f0c-4f96-aa26-d29526335965",
+            "sourceColumn": "Date",
             "summarizeBy": "none"
           },
           {
-            "name": "Último",
+            "name": "Price",
             "annotations": [
               {
                 "name": "SummarizationSetBy",
                 "value": "Automatic"
+              },
+              {
+                "name": "PBI_FormatHint",
+                "value": "{\"currencyCulture\":\"en-US\"}"
               }
             ],
-            "dataType": "string",
-            "lineageTag": "431fd8a8-e228-4093-8652-a4624e61b97f",
-            "sourceColumn": "Último",
-            "summarizeBy": "none"
+            "dataType": "decimal",
+            "formatString": "\\$#,0.###############;(\\$#,0.###############);\\$#,0.###############",
+            "lineageTag": "12a21d0d-d9e2-4069-a331-6d5c1a6ce582",
+            "sourceColumn": "Price",
+            "summarizeBy": "sum"
           },
           {
-            "name": "Abertura",
+            "name": "Open",
             "annotations": [
               {
                 "name": "SummarizationSetBy",
                 "value": "Automatic"
+              },
+              {
+                "name": "PBI_FormatHint",
+                "value": "{\"currencyCulture\":\"en-US\"}"
               }
             ],
-            "dataType": "string",
-            "lineageTag": "4d99d0ae-b869-44fa-bfba-e122e125e4de",
-            "sourceColumn": "Abertura",
-            "summarizeBy": "none"
+            "dataType": "decimal",
+            "formatString": "\\$#,0.###############;(\\$#,0.###############);\\$#,0.###############",
+            "lineageTag": "553eacac-7e8d-49e6-a1c3-84a3f52b822f",
+            "sourceColumn": "Open",
+            "summarizeBy": "sum"
           },
           {
-            "name": "Máxima",
+            "name": "High",
             "annotations": [
               {
                 "name": "SummarizationSetBy",
                 "value": "Automatic"
+              },
+              {
+                "name": "PBI_FormatHint",
+                "value": "{\"currencyCulture\":\"en-US\"}"
               }
             ],
-            "dataType": "string",
-            "lineageTag": "611dee4f-3834-4aad-a4e1-b66c332539dd",
-            "sourceColumn": "Máxima",
-            "summarizeBy": "none"
+            "dataType": "decimal",
+            "formatString": "\\$#,0.###############;(\\$#,0.###############);\\$#,0.###############",
+            "lineageTag": "6eeab320-7c37-479d-b356-a16dac5a3092",
+            "sourceColumn": "High",
+            "summarizeBy": "sum"
           },
           {
-            "name": "Mínima",
+            "name": "Low",
             "annotations": [
               {
                 "name": "SummarizationSetBy",
                 "value": "Automatic"
+              },
+              {
+                "name": "PBI_FormatHint",
+                "value": "{\"currencyCulture\":\"en-US\"}"
               }
             ],
-            "dataType": "string",
-            "lineageTag": "3c7acea2-91de-4ddf-bff3-77b01dd096f3",
-            "sourceColumn": "Mínima",
-            "summarizeBy": "none"
+            "dataType": "decimal",
+            "formatString": "\\$#,0.###############;(\\$#,0.###############);\\$#,0.###############",
+            "lineageTag": "e4e84a2a-8771-4567-88cf-ac6c96bbb3d7",
+            "sourceColumn": "Low",
+            "summarizeBy": "sum"
           },
           {
-            "name": "Vol.",
+            "name": "Change %",
             "annotations": [
               {
                 "name": "SummarizationSetBy",
                 "value": "Automatic"
+              },
+              {
+                "name": "PBI_FormatHint",
+                "value": "{\"isGeneralNumber\":true}"
               }
             ],
-            "dataType": "string",
-            "lineageTag": "3dd69e9c-2ada-4e73-9620-a38798a7ca88",
-            "sourceColumn": "Vol.",
-            "summarizeBy": "none"
+            "dataType": "double",
+            "lineageTag": "0a0b7b7c-601a-49b1-9f2f-2d259badbc33",
+            "sourceColumn": "Change %",
+            "summarizeBy": "sum"
           },
           {
-            "name": "Var%",
+            "name": "Vol",
             "annotations": [
               {
                 "name": "SummarizationSetBy",
                 "value": "Automatic"
+              },
+              {
+                "name": "PBI_FormatHint",
+                "value": "{\"isGeneralNumber\":true}"
               }
             ],
-            "dataType": "string",
-            "lineageTag": "ffdf0a8e-7e86-496e-bf65-23095991f513",
-            "sourceColumn": "Var%",
-            "summarizeBy": "none"
+            "dataType": "double",
+            "lineageTag": "326c62f7-2303-45b4-b77c-464bc17c3798",
+            "sourceColumn": "Vol",
+            "summarizeBy": "sum"
           }
         ],
         "lineageTag": "32c17290-896b-4f90-a900-e7566f753cea",
@@ -699,16 +732,32 @@
             "source": {
               "expression": [
                 "let",
-                "    // Fonte: Arquivo CSV do Google Drive",
+                "    // Source: CSV file from Google Drive",
                 "    Source = Csv.Document(",
                 "        Web.Contents(\"https://drive.google.com/uc?id=1Ia4xxCkdpATsZm3yntbAF2qVgAOom0XT&export=download\"), ",
                 "        [Delimiter=\",\", Columns=7, Encoding=65001, QuoteStyle=QuoteStyle.None]",
                 "    ),",
                 "    ",
-                "    // Promover a primeira linha como cabeçalhos",
-                "    #\"Promoted Headers\" = Table.PromoteHeaders(Source, [PromoteAllScalars=true])",
+                "    // Promote the first row as headers",
+                "    #\"Promoted Headers\" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),",
+                "    ",
+                "    // Add a custom column to handle \"K\" and \"M\" suffixes in the \"Vol.\" column",
+                "    #\"Added Custom Column\" = Table.AddColumn(#\"Promoted Headers\", \"Vol_Corrected\", each ",
+                "        if Text.EndsWith([Vol], \"K\") then Number.FromText(Text.Remove([Vol], {\"K\"})) * 1000",
+                "        else if Text.EndsWith([Vol], \"M\") then Number.FromText(Text.Remove([Vol], {\"M\"})) * 1000000",
+                "        else if Text.EndsWith([Vol], \"B\") then Number.FromText(Text.Remove([Vol], {\"B\"})) * 1000000000",
+                "        else Number.FromText([Vol]), type number",
+                "    ),",
+                "",
+                "    // Remove the original \"Vol.\" column and rename the corrected column",
+                "    #\"Removed Original Vol Column\" = Table.RemoveColumns(#\"Added Custom Column\", {\"Vol\"}),",
+                "    #\"Renamed Columns\" = Table.RenameColumns(#\"Removed Original Vol Column\", {{\"Vol_Corrected\", \"Vol\"}}),",
+                "    ",
+                "    // Change data types of other columns",
+                "    #\"Changed Type\" = Table.TransformColumnTypes(#\"Renamed Columns\",{{\"Date\", type date}, {\"Price\", Currency.Type}, {\"Open\", Currency.Type}, {\"High\", Currency.Type}, {\"Low\", Currency.Type}, {\"Vol\", type number}, {\"Change %\", Percentage.Type}})",
                 "in",
-                "    #\"Promoted Headers\""
+                "    // Returns the final table with updated \"Vol.\" values",
+                "    #\"Changed Type\""
               ],
               "type": "m"
             }
