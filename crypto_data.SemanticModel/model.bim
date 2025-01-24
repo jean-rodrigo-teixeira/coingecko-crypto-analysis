@@ -506,7 +506,7 @@
               "expression": [
                 "let",
                 "    // Start Date",
-                "    StartDate = #date(2024,1,1),",
+                "    StartDate = #date(2014,1,1),",
                 "    // End date of the calendar:",
                 "    // Last date of the next year --> Date.AddYears(Date.EndOfYear(Date.From(DateTime.LocalNow())),1),",
                 "    // Last date of the current year --> Date.EndOfYear(Date.From(DateTime.LocalNow())),",
@@ -612,6 +612,42 @@
             ],
             "formatString": "\\$#,0.###############;(\\$#,0.###############);\\$#,0.###############",
             "lineageTag": "48770a8a-54b0-47f7-86ee-3e025171fee8"
+          },
+          {
+            "name": "Close Price",
+            "annotations": [
+              {
+                "name": "PBI_FormatHint",
+                "value": "{\"currencyCulture\":\"en-US\"}"
+              }
+            ],
+            "expression": [
+              "",
+              "CALCULATE(",
+              "    SUM(fact_crypto_price_data[Close]),",
+              "    fact_crypto_price_data[Date] = MAX(fact_crypto_price_data[Date])",
+              ")"
+            ],
+            "formatString": "\\$#,0.###############;(\\$#,0.###############);\\$#,0.###############",
+            "lineageTag": "f4326902-6caa-4ebf-bd8b-02e9a354a21c"
+          },
+          {
+            "name": "Open Price",
+            "annotations": [
+              {
+                "name": "PBI_FormatHint",
+                "value": "{\"currencyCulture\":\"en-US\"}"
+              }
+            ],
+            "expression": [
+              "",
+              "CALCULATE(",
+              "    SUM(fact_crypto_price_data[Open]),",
+              "    fact_crypto_price_data[Date] = MIN(fact_crypto_price_data[Date])",
+              ")"
+            ],
+            "formatString": "\\$#,0.###############;(\\$#,0.###############);\\$#,0.###############",
+            "lineageTag": "47ed6069-2a0a-4667-9aab-7d78b75a6064"
           }
         ],
         "partitions": [
