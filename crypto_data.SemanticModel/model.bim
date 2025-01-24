@@ -66,22 +66,6 @@
         "folder": "auxiliaries"
       }
     ],
-    "relationships": [
-      {
-        "name": "f97e3f3a-3db3-6f77-9a8f-072996b9bf45",
-        "fromColumn": "ID",
-        "fromTable": "fact_crypto_price_data",
-        "toColumn": "ID",
-        "toTable": "dim_crypto_id_and_name"
-      },
-      {
-        "name": "5942e4d0-dab0-232e-fb4e-a3f99a745d6f",
-        "fromColumn": "Date",
-        "fromTable": "fact_crypto_price_data",
-        "toColumn": "Date",
-        "toTable": "dim_calendar"
-      }
-    ],
     "sourceQueryCulture": "en-US",
     "tables": [
       {
@@ -96,26 +80,7 @@
             "value": "Table"
           }
         ],
-        "changedProperties": [
-          {
-            "property": "Name"
-          }
-        ],
         "columns": [
-          {
-            "name": "ID",
-            "annotations": [
-              {
-                "name": "SummarizationSetBy",
-                "value": "Automatic"
-              }
-            ],
-            "dataType": "int64",
-            "formatString": "0",
-            "lineageTag": "bc9c26cf-62c7-4c86-beb6-dfacb3514994",
-            "sourceColumn": "ID",
-            "summarizeBy": "none"
-          },
           {
             "name": "Date",
             "annotations": [
@@ -130,12 +95,12 @@
             ],
             "dataType": "dateTime",
             "formatString": "Long Date",
-            "lineageTag": "d70bac22-e8e0-4e62-9a38-50ae361a6116",
+            "lineageTag": "f2a2bd06-041f-4a74-ad31-0a722e3c2ef7",
             "sourceColumn": "Date",
             "summarizeBy": "none"
           },
           {
-            "name": "Price (USD)",
+            "name": "Close",
             "annotations": [
               {
                 "name": "SummarizationSetBy",
@@ -148,8 +113,76 @@
             ],
             "dataType": "decimal",
             "formatString": "\\$#,0.###############;(\\$#,0.###############);\\$#,0.###############",
-            "lineageTag": "6748fdfe-7dcb-4cd3-85dd-c3f8cdc29f19",
-            "sourceColumn": "Price (USD)",
+            "lineageTag": "ad5e9ee1-bcce-4046-bbc8-fe23d44c6d64",
+            "sourceColumn": "Close",
+            "summarizeBy": "sum"
+          },
+          {
+            "name": "High",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              },
+              {
+                "name": "PBI_FormatHint",
+                "value": "{\"currencyCulture\":\"en-US\"}"
+              }
+            ],
+            "dataType": "decimal",
+            "formatString": "\\$#,0.###############;(\\$#,0.###############);\\$#,0.###############",
+            "lineageTag": "104b0efa-8a31-4fb8-8291-ba9453ad9957",
+            "sourceColumn": "High",
+            "summarizeBy": "sum"
+          },
+          {
+            "name": "Low",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              },
+              {
+                "name": "PBI_FormatHint",
+                "value": "{\"currencyCulture\":\"en-US\"}"
+              }
+            ],
+            "dataType": "decimal",
+            "formatString": "\\$#,0.###############;(\\$#,0.###############);\\$#,0.###############",
+            "lineageTag": "7812d6dd-62f8-4cde-98ce-216006d6ae80",
+            "sourceColumn": "Low",
+            "summarizeBy": "sum"
+          },
+          {
+            "name": "Open",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              },
+              {
+                "name": "PBI_FormatHint",
+                "value": "{\"currencyCulture\":\"en-US\"}"
+              }
+            ],
+            "dataType": "decimal",
+            "formatString": "\\$#,0.###############;(\\$#,0.###############);\\$#,0.###############",
+            "lineageTag": "ee408d1e-86e0-4e9d-9925-e61db639b810",
+            "sourceColumn": "Open",
+            "summarizeBy": "sum"
+          },
+          {
+            "name": "Volume",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ],
+            "dataType": "int64",
+            "formatString": "0",
+            "lineageTag": "41b27dae-e5fe-4ff0-88d2-d0e27e0097a4",
+            "sourceColumn": "Volume",
             "summarizeBy": "sum"
           }
         ],
@@ -166,33 +199,17 @@
                 "    // The file is directly loaded using the public link from Google Drive in CSV format",
                 "    Source = Csv.Document(",
                 "        Web.Contents(\"https://drive.google.com/uc?id=1Zc8uFpZHPgJ_xgFp_bdBqJktLZd42DtQ&export=download\"), ",
-                "        [Delimiter=\",\", Columns=3, Encoding=65001, QuoteStyle=QuoteStyle.None]",
+                "        [Delimiter=\",\", Columns=6, Encoding=65001, QuoteStyle=QuoteStyle.None]",
                 "    ),",
                 "    ",
                 "    // Promote the first row as headers",
                 "    // The first row of the CSV file will be used as column names",
                 "    #\"Promoted Headers\" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),",
-                "",
-                "    // Change data types of the columns",
-                "    // The 'ID' column is converted to Int64, 'Date' to datetime, and 'Price (USD)' to currency type",
-                "    #\"Changed Type\" = Table.TransformColumnTypes(",
-                "        #\"Promoted Headers\", ",
-                "        {{\"ID\", Int64.Type}, {\"Date\", type datetime}, {\"Price (USD)\", Currency.Type}}",
-                "    ),",
-                "",
-                "    // Filter rows where the time in the 'Date' column is exactly 12:00:00AM",
-                "    // Only rows where the time is midnight are kept",
-                "    #\"Filtered Rows\" = Table.SelectRows(",
-                "        #\"Changed Type\", ",
-                "        each DateTime.ToText([Date], \"HH:mm:ss\") = \"00:00:00\"",
-                "    ),",
-                "",
-                "    // Change the 'Date' column type to date only (removing the time part)",
-                "    // This removes the time, keeping only the date value",
-                "    #\"Changed Type1\" = Table.TransformColumnTypes(#\"Filtered Rows\", {{\"Date\", type date}})",
+                "    #\"Removed Top Rows\" = Table.Skip(#\"Promoted Headers\",2),",
+                "    #\"Renamed Columns\" = Table.RenameColumns(#\"Removed Top Rows\",{{\"Price\", \"Date\"}}),",
+                "    #\"Changed Type\" = Table.TransformColumnTypes(#\"Renamed Columns\",{{\"Date\", type date}, {\"Close\", Currency.Type}, {\"High\", Currency.Type}, {\"Low\", Currency.Type}, {\"Open\", Currency.Type}, {\"Volume\", Int64.Type}})",
                 "in",
-                "    // Returns the final table with all transformations applied",
-                "    #\"Changed Type1\""
+                "    #\"Changed Type\""
               ],
               "type": "m"
             }
@@ -230,7 +247,7 @@
             "isDefaultLabel": true,
             "lineageTag": "d27dacdd-bcf6-4dc9-9ebe-af5ad853a85d",
             "sourceColumn": "ID",
-            "summarizeBy": "none"
+            "summarizeBy": "count"
           },
           {
             "name": "Coin",
@@ -326,7 +343,7 @@
             "formatString": "0",
             "lineageTag": "6b3f5897-ad20-4443-b8b9-21a1cce218a0",
             "sourceColumn": "Day",
-            "summarizeBy": "none"
+            "summarizeBy": "sum"
           },
           {
             "name": "Week",
@@ -392,7 +409,7 @@
             "formatString": "0",
             "lineageTag": "73bd66ee-06c1-41e7-b38d-89812fee72e3",
             "sourceColumn": "Year",
-            "summarizeBy": "none"
+            "summarizeBy": "sum"
           },
           {
             "name": "YearMonthSeq",
@@ -406,7 +423,7 @@
             "formatString": "0",
             "lineageTag": "8c95957b-9ec2-434e-8be3-c9af78464666",
             "sourceColumn": "YearMonthSeq",
-            "summarizeBy": "none"
+            "summarizeBy": "sum"
           },
           {
             "name": "MonthYear",
