@@ -66,6 +66,17 @@
         "folder": "auxiliaries"
       }
     ],
+    "relationships": [
+      {
+        "name": "10882e37-1bcf-3d02-83c7-793118d7f4f9",
+        "crossFilteringBehavior": "bothDirections",
+        "fromCardinality": "one",
+        "fromColumn": "Date",
+        "fromTable": "fact_crypto_price_data",
+        "toColumn": "Date",
+        "toTable": "dim_calendar"
+      }
+    ],
     "sourceQueryCulture": "en-US",
     "tables": [
       {
@@ -203,11 +214,30 @@
                 "    ),",
                 "    ",
                 "    // Promote the first row as headers",
-                "    // The first row of the CSV file will be used as column names",
+                "    // The first row of the CSV file is treated as column headers instead of data",
                 "    #\"Promoted Headers\" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),",
-                "    #\"Removed Top Rows\" = Table.Skip(#\"Promoted Headers\",2),",
-                "    #\"Renamed Columns\" = Table.RenameColumns(#\"Removed Top Rows\",{{\"Price\", \"Date\"}}),",
-                "    #\"Changed Type\" = Table.TransformColumnTypes(#\"Renamed Columns\",{{\"Date\", type date}, {\"Close\", Currency.Type}, {\"High\", Currency.Type}, {\"Low\", Currency.Type}, {\"Open\", Currency.Type}, {\"Volume\", Int64.Type}})",
+                "",
+                "    // Remove the top 2 rows",
+                "    // Skips the first 2 rows of the table, assuming they contain unwanted data or metadata",
+                "    #\"Removed Top Rows\" = Table.Skip(#\"Promoted Headers\", 2),",
+                "",
+                "    // Rename the columns",
+                "    // Changes the name of the \"Price\" column to \"Date\" for clarity and consistency",
+                "    #\"Renamed Columns\" = Table.RenameColumns(#\"Removed Top Rows\", {{\"Price\", \"Date\"}}),",
+                "",
+                "    // Change column data types",
+                "    // Ensures proper data types for each column:",
+                "    // - \"Date\" column is converted to a date type",
+                "    // - \"Close\", \"High\", \"Low\", and \"Open\" columns are set to currency type for consistency in financial data",
+                "    // - \"Volume\" column is set to a 64-bit integer type to handle large values",
+                "    #\"Changed Type\" = Table.TransformColumnTypes(#\"Renamed Columns\", {",
+                "        {\"Date\", type date}, ",
+                "        {\"Close\", Currency.Type}, ",
+                "        {\"High\", Currency.Type}, ",
+                "        {\"Low\", Currency.Type}, ",
+                "        {\"Open\", Currency.Type}, ",
+                "        {\"Volume\", Int64.Type}",
+                "    })",
                 "in",
                 "    #\"Changed Type\""
               ],
@@ -547,7 +577,7 @@
             ],
             "expression": [
               "",
-              "MAX(fact_crypto_price_data[Price (USD)])"
+              "MAX(fact_crypto_price_data[High])"
             ],
             "formatString": "\\$#,0.###############;(\\$#,0.###############);\\$#,0.###############",
             "lineageTag": "3a77e333-8eb3-4d1d-ae27-5565612c0a89"
@@ -562,7 +592,7 @@
             ],
             "expression": [
               "",
-              "AVERAGE(fact_crypto_price_data[Price (USD)])",
+              "AVERAGE(fact_crypto_price_data[Open])",
               ""
             ],
             "formatString": "\\$#,0.###############;(\\$#,0.###############);\\$#,0.###############",
@@ -578,7 +608,7 @@
             ],
             "expression": [
               "",
-              "MIN(fact_crypto_price_data[Price (USD)])"
+              "MIN(fact_crypto_price_data[Low])"
             ],
             "formatString": "\\$#,0.###############;(\\$#,0.###############);\\$#,0.###############",
             "lineageTag": "48770a8a-54b0-47f7-86ee-3e025171fee8"
