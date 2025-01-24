@@ -481,15 +481,15 @@
                 "ordinal": 0
               },
               {
-                "name": "Month Name",
-                "column": "Month Name",
-                "lineageTag": "c75000f7-ae4a-4006-b060-d9a1817dfffe",
+                "name": "MonthYear",
+                "column": "MonthYear",
+                "lineageTag": "1e491b7a-8490-4443-b8a4-5550ff5315a3",
                 "ordinal": 1
               },
               {
-                "name": "Day",
-                "column": "Day",
-                "lineageTag": "fe953b7e-bc12-48f6-b6e8-4b76830ce52f",
+                "name": "Date",
+                "column": "Date",
+                "lineageTag": "babe7bb7-6760-4321-9e6e-242735b5b775",
                 "ordinal": 2
               }
             ],
