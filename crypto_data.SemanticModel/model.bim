@@ -354,7 +354,7 @@
               }
             ],
             "dataType": "dateTime",
-            "formatString": "Long Date",
+            "formatString": "Short Date",
             "isDefaultLabel": true,
             "isKey": true,
             "lineageTag": "a1365db1-a6af-4b1d-8e0d-86210af55ace",
@@ -648,6 +648,12 @@
             ],
             "formatString": "\\$#,0.###############;(\\$#,0.###############);\\$#,0.###############",
             "lineageTag": "47ed6069-2a0a-4667-9aab-7d78b75a6064"
+          },
+          {
+            "name": "Volume",
+            "expression": "SUM(fact_crypto_price_data[Volume])",
+            "formatString": "0",
+            "lineageTag": "c691f322-9e5d-4cbf-8619-a093003bda4a"
           }
         ],
         "partitions": [
