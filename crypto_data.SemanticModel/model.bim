@@ -463,8 +463,14 @@
                 "value": "Automatic"
               }
             ],
+            "changedProperties": [
+              {
+                "property": "SortByColumn"
+              }
+            ],
             "dataType": "string",
             "lineageTag": "fb42120a-89b4-40a6-a3cf-4fac913d6b1c",
+            "sortByColumn": "YearMonthSeq",
             "sourceColumn": "MonthYear",
             "summarizeBy": "none"
           }
@@ -579,7 +585,7 @@
               "",
               "MAX(fact_crypto_price_data[High])"
             ],
-            "formatString": "\\$#,0.###############;(\\$#,0.###############);\\$#,0.###############",
+            "formatString": "\\$#,0.00;(\\$#,0.00);\\$#,0.00",
             "lineageTag": "3a77e333-8eb3-4d1d-ae27-5565612c0a89"
           },
           {
@@ -610,7 +616,7 @@
               "",
               "MIN(fact_crypto_price_data[Low])"
             ],
-            "formatString": "\\$#,0.###############;(\\$#,0.###############);\\$#,0.###############",
+            "formatString": "\\$#,0.00;(\\$#,0.00);\\$#,0.00",
             "lineageTag": "48770a8a-54b0-47f7-86ee-3e025171fee8"
           },
           {
@@ -628,7 +634,7 @@
               "    fact_crypto_price_data[Date] = MAX(fact_crypto_price_data[Date])",
               ")"
             ],
-            "formatString": "\\$#,0.###############;(\\$#,0.###############);\\$#,0.###############",
+            "formatString": "\\$#,0.00;(\\$#,0.00);\\$#,0.00",
             "lineageTag": "f4326902-6caa-4ebf-bd8b-02e9a354a21c"
           },
           {
@@ -646,7 +652,7 @@
               "    fact_crypto_price_data[Date] = MIN(fact_crypto_price_data[Date])",
               ")"
             ],
-            "formatString": "\\$#,0.###############;(\\$#,0.###############);\\$#,0.###############",
+            "formatString": "\\$#,0.00;(\\$#,0.00);\\$#,0.00",
             "lineageTag": "47ed6069-2a0a-4667-9aab-7d78b75a6064"
           },
           {
@@ -654,6 +660,18 @@
             "expression": "SUM(fact_crypto_price_data[Volume])",
             "formatString": "0",
             "lineageTag": "c691f322-9e5d-4cbf-8619-a093003bda4a"
+          },
+          {
+            "name": "Percentage Change",
+            "expression": [
+              "",
+              "DIVIDE(",
+              "    ([Close Price] - [Open Price]), ",
+              "    [Open Price]",
+              ")"
+            ],
+            "formatString": "0.00%;-0.00%;0.00%",
+            "lineageTag": "a4ab4b45-891c-434f-a7c8-0c3fc592c243"
           }
         ],
         "partitions": [
