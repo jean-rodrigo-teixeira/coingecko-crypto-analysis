@@ -102,6 +102,15 @@
           "z": 5004.00
         },
         {
+          "config": "{\"name\":\"dde696ec46e0bed1999b\",\"layouts\":[{\"id\":0,\"position\":{\"x\":0,\"y\":209.94924538099468,\"z\":5006,\"width\":1259.695472285968,\"height\":149.5716846178328,\"tabOrder\":5006}}],\"singleVisual\":{\"visualType\":\"lineChart\",\"projections\":{\"Y\":[{\"queryRef\":\"aux_measures.Volume\"}],\"Category\":[{\"queryRef\":\"dim_calendar.Date Hierarchy.Year\",\"active\":true},{\"queryRef\":\"dim_calendar.Date Hierarchy.MonthYear\"},{\"queryRef\":\"dim_calendar.Date Hierarchy.Date\"}]},\"prototypeQuery\":{\"Version\":2,\"From\":[{\"Name\":\"a\",\"Entity\":\"aux_measures\",\"Type\":0},{\"Name\":\"d\",\"Entity\":\"dim_calendar\",\"Type\":0}],\"Select\":[{\"Measure\":{\"Expression\":{\"SourceRef\":{\"Source\":\"a\"}},\"Property\":\"Volume\"},\"Name\":\"aux_measures.Volume\",\"NativeReferenceName\":\"Volume\"},{\"HierarchyLevel\":{\"Expression\":{\"Hierarchy\":{\"Expression\":{\"SourceRef\":{\"Source\":\"d\"}},\"Hierarchy\":\"Date Hierarchy\"}},\"Level\":\"Year\"},\"Name\":\"dim_calendar.Date Hierarchy.Year\",\"NativeReferenceName\":\"Date Hierarchy Year\"},{\"HierarchyLevel\":{\"Expression\":{\"Hierarchy\":{\"Expression\":{\"SourceRef\":{\"Source\":\"d\"}},\"Hierarchy\":\"Date Hierarchy\"}},\"Level\":\"MonthYear\"},\"Name\":\"dim_calendar.Date Hierarchy.MonthYear\",\"NativeReferenceName\":\"Date Hierarchy MonthYear\"},{\"HierarchyLevel\":{\"Expression\":{\"Hierarchy\":{\"Expression\":{\"SourceRef\":{\"Source\":\"d\"}},\"Hierarchy\":\"Date Hierarchy\"}},\"Level\":\"Date\"},\"Name\":\"dim_calendar.Date Hierarchy.Date\",\"NativeReferenceName\":\"Date Hierarchy Date\"}]},\"drillFilterOtherVisuals\":true}}",
+          "filters": "[]",
+          "height": 149.57,
+          "width": 1259.70,
+          "x": 0.00,
+          "y": 209.95,
+          "z": 5006.00
+        },
+        {
           "config": "{\"name\":\"e619ba907d3737507590\",\"layouts\":[{\"id\":0,\"position\":{\"x\":1000.3464044623863,\"y\":0,\"z\":5003,\"width\":279.9323271746596,\"height\":146.82725003768908,\"tabOrder\":5003}}],\"singleVisual\":{\"visualType\":\"card\",\"projections\":{\"Values\":[{\"queryRef\":\"aux_measures.Percentage Change\"}]},\"prototypeQuery\":{\"Version\":2,\"From\":[{\"Name\":\"a\",\"Entity\":\"aux_measures\",\"Type\":0}],\"Select\":[{\"Measure\":{\"Expression\":{\"SourceRef\":{\"Source\":\"a\"}},\"Property\":\"Percentage Change\"},\"Name\":\"aux_measures.Percentage Change\",\"NativeReferenceName\":\"Percentage Change\"}],\"OrderBy\":[{\"Direction\":2,\"Expression\":{\"Measure\":{\"Expression\":{\"SourceRef\":{\"Source\":\"a\"}},\"Property\":\"Percentage Change\"}}}]},\"drillFilterOtherVisuals\":true,\"hasDefaultSort\":true}}",
           "filters": "[]",
           "height": 146.83,
