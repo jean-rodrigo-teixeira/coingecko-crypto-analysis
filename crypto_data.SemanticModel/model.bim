@@ -598,7 +598,7 @@
             ],
             "expression": [
               "",
-              "AVERAGE(fact_crypto_price_data[Open])",
+              "DIVIDE([Open Price]+[Close Price],2)",
               ""
             ],
             "formatString": "\\$#,0.###############;(\\$#,0.###############);\\$#,0.###############",
