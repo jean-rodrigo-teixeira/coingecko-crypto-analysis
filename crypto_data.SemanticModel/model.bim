@@ -574,7 +574,7 @@
         "lineageTag": "d650f732-a3b8-458d-b74d-d311cb078245",
         "measures": [
           {
-            "name": "Max Price",
+            "name": "High Price",
             "annotations": [
               {
                 "name": "PBI_FormatHint",
@@ -605,7 +605,7 @@
             "lineageTag": "1bb53d0d-9907-4168-a4e6-f0897600d160"
           },
           {
-            "name": "Min Price",
+            "name": "Low Price",
             "annotations": [
               {
                 "name": "PBI_FormatHint",
@@ -658,7 +658,7 @@
           {
             "name": "Volume",
             "expression": "SUM(fact_crypto_price_data[Volume])",
-            "formatString": "0",
+            "formatString": "#,0",
             "lineageTag": "c691f322-9e5d-4cbf-8619-a093003bda4a"
           },
           {
