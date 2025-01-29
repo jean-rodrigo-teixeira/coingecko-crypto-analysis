@@ -1,12 +1,15 @@
 import yfinance as yf
 import os
+from datetime import datetime
 
 # Define the Bitcoin symbol on Yahoo Finance
 symbol = "BTC-USD"
 
 # Define the desired time period
 start_date = "2010-01-01"  # Start date
-end_date = "2025-01-01"    # End date
+
+# Get today's date
+end_date = datetime.now().strftime('%Y-%m-%d')  # Today (current date)
 
 # Get the path from the CRYPTO_DATA_PATH environment variable
 crypto_data_path = os.getenv("CRYPTO_DATA_PATH")
