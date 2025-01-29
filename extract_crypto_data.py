@@ -1,33 +1,33 @@
 import yfinance as yf
 import os
 
-# Define o símbolo do Bitcoin no Yahoo Finance
+# Define the Bitcoin symbol on Yahoo Finance
 symbol = "BTC-USD"
 
-# Define o período de tempo desejado
-start_date = "2010-01-01"  # Data inicial
-end_date = "2025-01-01"    # Data final
+# Define the desired time period
+start_date = "2010-01-01"  # Start date
+end_date = "2025-01-01"    # End date
 
-# Obtém o caminho da variável de ambiente CRYPTO_DATA_PATH
+# Get the path from the CRYPTO_DATA_PATH environment variable
 crypto_data_path = os.getenv("CRYPTO_DATA_PATH")
 
-# Se a variável não estiver definida, lança um erro
+# If the variable is not set, raise an error
 if not crypto_data_path:
-    raise EnvironmentError("A variável de ambiente 'CRYPTO_DATA_PATH' não está definida.")
+    raise EnvironmentError("The environment variable 'CRYPTO_DATA_PATH' is not set.")
 
-# Verifica se o caminho existe; se não, cria a pasta
+# Check if the path exists; if not, create the folder
 if not os.path.exists(crypto_data_path):
     os.makedirs(crypto_data_path)
 
-# Define o caminho completo para salvar o arquivo
+# Define the full path to save the file
 csv_path = os.path.join(crypto_data_path, "crypto_price_data.csv")
 
-# Baixa os dados históricos
+# Download historical data
 try:
     data = yf.download(symbol, start=start_date, end=end_date, interval="1d")
     
-    # Salva os dados como CSV
+    # Save data as CSV
     data.to_csv(csv_path)
-    print(f"Dados salvos em: {csv_path}")
+    print(f"Data saved at: {csv_path}")
 except Exception as e:
-    print(f"Erro ao baixar os dados: {e}")
+    print(f"Error downloading data: {e}")
