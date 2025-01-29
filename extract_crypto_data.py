@@ -7,9 +7,7 @@ symbol = "BTC-USD"
 
 # Define the desired time period
 start_date = "2010-01-01"  # Start date
-
-# Get today's date
-end_date = datetime.now().strftime('%Y-%m-%d')  # Today (current date)
+end_date = datetime.today().strftime('%Y-%m-%d')  # End date as the current date
 
 # Get the path from the CRYPTO_DATA_PATH environment variable
 crypto_data_path = os.getenv("CRYPTO_DATA_PATH")
@@ -29,8 +27,17 @@ csv_path = os.path.join(crypto_data_path, "crypto_price_data.csv")
 try:
     data = yf.download(symbol, start=start_date, end=end_date, interval="1d")
     
+    # Reset index to make sure Date is a column
+    data.reset_index(inplace=True)
+    
+    # Rename columns to match desired format
+    data.columns = ['Date', 'Close', 'High', 'Low', 'Open', 'Volume']
+    
+    # Add the 'Crypto' column with the symbol value
+    data.insert(0, 'Crypto', symbol)
+    
     # Save data as CSV
-    data.to_csv(csv_path)
+    data.to_csv(csv_path, index=False)
     print(f"Data saved at: {csv_path}")
 except Exception as e:
     print(f"Error downloading data: {e}")
