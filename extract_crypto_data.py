@@ -70,16 +70,16 @@ for symbol in symbols:
 # Concatenate all the data into a single DataFrame
 combined_data = pd.concat(all_data, ignore_index=True)
 
+# Load the crypto ID and name data
+crypto_id_and_name_df = pd.read_csv(crypto_id_and_name_path)
+
+# Merge the price data with the ID and Name data based on the 'Crypto' column
+combined_data = combined_data.merge(crypto_id_and_name_df[['Crypto', 'ID']], on='Crypto', how='left')
+
+# Remove the 'Crypto' column and reorder the columns
+combined_data = combined_data.drop(columns=['Crypto'])
+combined_data = combined_data[['ID', 'Date', 'Close', 'High', 'Low', 'Open', 'Volume']]
+
 # Save the combined data to a single CSV file
 combined_data.to_csv(csv_path, index=False)
-print(f"Combined data saved at: {csv_path}")
-
-# Create a list of IDs and names for each cryptocurrency
-crypto_id_and_name = [{"ID": idx + 1, "Crypto": symbol, "Name": crypto_names[symbol]} for idx, symbol in enumerate(symbols)]
-
-# Create a DataFrame for the crypto ID and names
-crypto_id_and_name_df = pd.DataFrame(crypto_id_and_name)
-
-# Save the crypto ID and names to a CSV file
-crypto_id_and_name_df.to_csv(crypto_id_and_name_path, index=False)
-print(f"Crypto ID and name data saved at: {crypto_id_and_name_path}")
+print(f"Combined data with IDs saved at: {csv_path}")
