@@ -6,6 +6,20 @@ import pandas as pd
 # Define the symbols for the top 10 cryptocurrencies on Yahoo Finance
 symbols = ["BTC-USD", "ETH-USD", "XRP-USD", "LTC-USD", "ADA-USD", "DOGE-USD", "BNB-USD", "SOL-USD", "MATIC-USD", "DOT-USD"]
 
+# Define the corresponding names of the cryptocurrencies
+crypto_names = {
+    "BTC-USD": "Bitcoin",
+    "ETH-USD": "Ethereum",
+    "XRP-USD": "XRP",
+    "LTC-USD": "Litecoin",
+    "ADA-USD": "Cardano",
+    "DOGE-USD": "Dogecoin",
+    "BNB-USD": "Binance Coin",
+    "SOL-USD": "Solana",
+    "MATIC-USD": "Polygon",
+    "DOT-USD": "Polkadot"
+}
+
 # Define the desired time period
 start_date = "2010-01-01"  # Start date
 end_date = datetime.today().strftime('%Y-%m-%d')  # End date as the current date
@@ -21,8 +35,9 @@ if not crypto_data_path:
 if not os.path.exists(crypto_data_path):
     os.makedirs(crypto_data_path)
 
-# Define the full path to save the file
+# Define the full path to save the files
 csv_path = os.path.join(crypto_data_path, "crypto_price_data.csv")
+crypto_id_and_name_path = os.path.join(crypto_data_path, "crypto_id_and_name.csv")
 
 # List to store the data for each cryptocurrency
 all_data = []
@@ -58,3 +73,13 @@ combined_data = pd.concat(all_data, ignore_index=True)
 # Save the combined data to a single CSV file
 combined_data.to_csv(csv_path, index=False)
 print(f"Combined data saved at: {csv_path}")
+
+# Create a list of IDs and names for each cryptocurrency
+crypto_id_and_name = [{"ID": idx + 1, "Crypto": symbol, "Name": crypto_names[symbol]} for idx, symbol in enumerate(symbols)]
+
+# Create a DataFrame for the crypto ID and names
+crypto_id_and_name_df = pd.DataFrame(crypto_id_and_name)
+
+# Save the crypto ID and names to a CSV file
+crypto_id_and_name_df.to_csv(crypto_id_and_name_path, index=False)
+print(f"Crypto ID and name data saved at: {crypto_id_and_name_path}")

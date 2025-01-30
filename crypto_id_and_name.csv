@@ -1,5 +1,11 @@
-ID,Coin
-1,bitcoin
-2,ethereum
-3,ripple
-4,litecoin
+ID,Crypto,Name
+1,BTC-USD,Bitcoin
+2,ETH-USD,Ethereum
+3,XRP-USD,XRP
+4,LTC-USD,Litecoin
+5,ADA-USD,Cardano
+6,DOGE-USD,Dogecoin
+7,BNB-USD,Binance Coin
+8,SOL-USD,Solana
+9,MATIC-USD,Polygon
+10,DOT-USD,Polkadot
