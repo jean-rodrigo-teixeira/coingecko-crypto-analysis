@@ -12,7 +12,7 @@
       },
       {
         "name": "PBI_QueryOrder",
-        "value": "[\"fact_crypto_price_data\",\"dim_crypto_id_and_name\",\"dim_calendar\",\"aux_measures\",\"historical_bitcoin_price_data\"]"
+        "value": "[\"fact_crypto_price_data\",\"dim_crypto_id_and_name\",\"dim_calendar\",\"aux_measures\"]"
       },
       {
         "name": "PBI_ProTooling",
@@ -68,13 +68,18 @@
     ],
     "relationships": [
       {
-        "name": "10882e37-1bcf-3d02-83c7-793118d7f4f9",
-        "crossFilteringBehavior": "bothDirections",
-        "fromCardinality": "one",
+        "name": "bc0b2913-44ea-2998-9e17-4bb9e5cced5c",
         "fromColumn": "Date",
         "fromTable": "fact_crypto_price_data",
         "toColumn": "Date",
         "toTable": "dim_calendar"
+      },
+      {
+        "name": "691fe365-708f-3f66-8adf-12228d246f51",
+        "fromColumn": "ID",
+        "fromTable": "fact_crypto_price_data",
+        "toColumn": "ID",
+        "toTable": "dim_crypto_id_and_name"
       }
     ],
     "sourceQueryCulture": "en-US",
@@ -92,24 +97,6 @@
           }
         ],
         "columns": [
-          {
-            "name": "Date",
-            "annotations": [
-              {
-                "name": "SummarizationSetBy",
-                "value": "Automatic"
-              },
-              {
-                "name": "UnderlyingDateTimeDataType",
-                "value": "Date"
-              }
-            ],
-            "dataType": "dateTime",
-            "formatString": "Long Date",
-            "lineageTag": "f2a2bd06-041f-4a74-ad31-0a722e3c2ef7",
-            "sourceColumn": "Date",
-            "summarizeBy": "none"
-          },
           {
             "name": "Close",
             "annotations": [
@@ -195,6 +182,38 @@
             "lineageTag": "41b27dae-e5fe-4ff0-88d2-d0e27e0097a4",
             "sourceColumn": "Volume",
             "summarizeBy": "sum"
+          },
+          {
+            "name": "ID",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ],
+            "dataType": "int64",
+            "formatString": "0",
+            "lineageTag": "4ece9a53-a472-463f-acf7-b2812c437c78",
+            "sourceColumn": "ID",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "Date",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              },
+              {
+                "name": "UnderlyingDateTimeDataType",
+                "value": "Date"
+              }
+            ],
+            "dataType": "dateTime",
+            "formatString": "Long Date",
+            "lineageTag": "4a13b22d-09ad-4235-a217-dec17e716230",
+            "sourceColumn": "Date",
+            "summarizeBy": "none"
           }
         ],
         "lineageTag": "17c6be94-d8c0-4653-be0c-f4bfc239a79a",
@@ -210,7 +229,7 @@
                 "    // The file is directly loaded using the public link from Google Drive in CSV format",
                 "    Source = Csv.Document(",
                 "        Web.Contents(\"https://drive.google.com/uc?id=1Zc8uFpZHPgJ_xgFp_bdBqJktLZd42DtQ&export=download\"), ",
-                "        [Delimiter=\",\", Columns=6, Encoding=65001, QuoteStyle=QuoteStyle.None]",
+                "        [Delimiter=\",\", Columns=7, Encoding=65001, QuoteStyle=QuoteStyle.None]",
                 "    ),",
                 "    ",
                 "    // Promote the first row as headers",
@@ -221,16 +240,13 @@
                 "    // Skips the first 2 rows of the table, assuming they contain unwanted data or metadata",
                 "    #\"Removed Top Rows\" = Table.Skip(#\"Promoted Headers\", 2),",
                 "",
-                "    // Rename the columns",
-                "    // Changes the name of the \"Price\" column to \"Date\" for clarity and consistency",
-                "    #\"Renamed Columns\" = Table.RenameColumns(#\"Removed Top Rows\", {{\"Price\", \"Date\"}}),",
-                "",
                 "    // Change column data types",
                 "    // Ensures proper data types for each column:",
                 "    // - \"Date\" column is converted to a date type",
                 "    // - \"Close\", \"High\", \"Low\", and \"Open\" columns are set to currency type for consistency in financial data",
                 "    // - \"Volume\" column is set to a 64-bit integer type to handle large values",
-                "    #\"Changed Type\" = Table.TransformColumnTypes(#\"Renamed Columns\", {",
+                "    #\"Changed Type\" = Table.TransformColumnTypes(#\"Removed Top Rows\", {",
+                "        {\"ID\", Int64.Type},",
                 "        {\"Date\", type date}, ",
                 "        {\"Close\", Currency.Type}, ",
                 "        {\"High\", Currency.Type}, ",
@@ -258,11 +274,6 @@
             "value": "Table"
           }
         ],
-        "changedProperties": [
-          {
-            "property": "Name"
-          }
-        ],
         "columns": [
           {
             "name": "ID",
@@ -277,10 +288,10 @@
             "isDefaultLabel": true,
             "lineageTag": "d27dacdd-bcf6-4dc9-9ebe-af5ad853a85d",
             "sourceColumn": "ID",
-            "summarizeBy": "count"
+            "summarizeBy": "none"
           },
           {
-            "name": "Coin",
+            "name": "Crypto",
             "annotations": [
               {
                 "name": "SummarizationSetBy",
@@ -288,8 +299,21 @@
               }
             ],
             "dataType": "string",
-            "lineageTag": "23018f32-baa7-4a1d-8843-b0b1bc45818f",
-            "sourceColumn": "Coin",
+            "lineageTag": "baa49fd6-44d9-4fb1-a55a-4e809ade4870",
+            "sourceColumn": "Crypto",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "Name",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ],
+            "dataType": "string",
+            "lineageTag": "5f3d0ced-2cf3-42dc-ad4b-c4105e15b9a9",
+            "sourceColumn": "Name",
             "summarizeBy": "none"
           }
         ],
@@ -306,7 +330,7 @@
                 "    // The file is directly loaded using the public link from Google Drive in CSV format",
                 "    Source = Csv.Document(",
                 "        Web.Contents(\"https://drive.google.com/uc?id=1G7iAckxC7_xWpp0_Nv-nKSCBkzjTIwX3&export=download\"), ",
-                "        [Delimiter=\",\", Columns=2, Encoding=65001, QuoteStyle=QuoteStyle.None]",
+                "        [Delimiter=\",\", Columns=3, Encoding=65001, QuoteStyle=QuoteStyle.None]",
                 "    ),",
                 "    ",
                 "    // Promote the first row as headers",
@@ -317,7 +341,7 @@
                 "    // The 'ID' column is converted to Int64 and the 'Coin' column to text",
                 "    #\"Changed Type\" = Table.TransformColumnTypes(",
                 "        #\"Promoted Headers\", ",
-                "        {{\"ID\", Int64.Type}, {\"Coin\", type text}}",
+                "        {{\"ID\", Int64.Type}, {\"Crypto\", type text}, {\"Name\", type text}}",
                 "    )",
                 "in",
                 "    // Returns the final table with all transformations applied",
@@ -373,7 +397,7 @@
             "formatString": "0",
             "lineageTag": "6b3f5897-ad20-4443-b8b9-21a1cce218a0",
             "sourceColumn": "Day",
-            "summarizeBy": "sum"
+            "summarizeBy": "none"
           },
           {
             "name": "Week",
@@ -439,7 +463,7 @@
             "formatString": "0",
             "lineageTag": "73bd66ee-06c1-41e7-b38d-89812fee72e3",
             "sourceColumn": "Year",
-            "summarizeBy": "sum"
+            "summarizeBy": "none"
           },
           {
             "name": "YearMonthSeq",
@@ -453,7 +477,7 @@
             "formatString": "0",
             "lineageTag": "8c95957b-9ec2-434e-8be3-c9af78464666",
             "sourceColumn": "YearMonthSeq",
-            "summarizeBy": "sum"
+            "summarizeBy": "none"
           },
           {
             "name": "MonthYear",
@@ -687,184 +711,6 @@
                 "    #\"Removed Columns\" = Table.RemoveColumns(#\"Changed Type\",{\"Coluna 1\"})",
                 "in",
                 "    #\"Removed Columns\""
-              ],
-              "type": "m"
-            }
-          }
-        ]
-      },
-      {
-        "name": "historical_bitcoin_price_data",
-        "annotations": [
-          {
-            "name": "PBI_ResultType",
-            "value": "Table"
-          },
-          {
-            "name": "PBI_NavigationStepName",
-            "value": "Navigation"
-          }
-        ],
-        "columns": [
-          {
-            "name": "Date",
-            "annotations": [
-              {
-                "name": "SummarizationSetBy",
-                "value": "Automatic"
-              },
-              {
-                "name": "UnderlyingDateTimeDataType",
-                "value": "Date"
-              }
-            ],
-            "dataType": "dateTime",
-            "formatString": "Long Date",
-            "lineageTag": "ca16c7cf-1f0c-4f96-aa26-d29526335965",
-            "sourceColumn": "Date",
-            "summarizeBy": "none"
-          },
-          {
-            "name": "Price",
-            "annotations": [
-              {
-                "name": "SummarizationSetBy",
-                "value": "Automatic"
-              },
-              {
-                "name": "PBI_FormatHint",
-                "value": "{\"currencyCulture\":\"en-US\"}"
-              }
-            ],
-            "dataType": "decimal",
-            "formatString": "\\$#,0.###############;(\\$#,0.###############);\\$#,0.###############",
-            "lineageTag": "12a21d0d-d9e2-4069-a331-6d5c1a6ce582",
-            "sourceColumn": "Price",
-            "summarizeBy": "sum"
-          },
-          {
-            "name": "Open",
-            "annotations": [
-              {
-                "name": "SummarizationSetBy",
-                "value": "Automatic"
-              },
-              {
-                "name": "PBI_FormatHint",
-                "value": "{\"currencyCulture\":\"en-US\"}"
-              }
-            ],
-            "dataType": "decimal",
-            "formatString": "\\$#,0.###############;(\\$#,0.###############);\\$#,0.###############",
-            "lineageTag": "553eacac-7e8d-49e6-a1c3-84a3f52b822f",
-            "sourceColumn": "Open",
-            "summarizeBy": "sum"
-          },
-          {
-            "name": "High",
-            "annotations": [
-              {
-                "name": "SummarizationSetBy",
-                "value": "Automatic"
-              },
-              {
-                "name": "PBI_FormatHint",
-                "value": "{\"currencyCulture\":\"en-US\"}"
-              }
-            ],
-            "dataType": "decimal",
-            "formatString": "\\$#,0.###############;(\\$#,0.###############);\\$#,0.###############",
-            "lineageTag": "6eeab320-7c37-479d-b356-a16dac5a3092",
-            "sourceColumn": "High",
-            "summarizeBy": "sum"
-          },
-          {
-            "name": "Low",
-            "annotations": [
-              {
-                "name": "SummarizationSetBy",
-                "value": "Automatic"
-              },
-              {
-                "name": "PBI_FormatHint",
-                "value": "{\"currencyCulture\":\"en-US\"}"
-              }
-            ],
-            "dataType": "decimal",
-            "formatString": "\\$#,0.###############;(\\$#,0.###############);\\$#,0.###############",
-            "lineageTag": "e4e84a2a-8771-4567-88cf-ac6c96bbb3d7",
-            "sourceColumn": "Low",
-            "summarizeBy": "sum"
-          },
-          {
-            "name": "Change %",
-            "annotations": [
-              {
-                "name": "SummarizationSetBy",
-                "value": "Automatic"
-              },
-              {
-                "name": "PBI_FormatHint",
-                "value": "{\"isGeneralNumber\":true}"
-              }
-            ],
-            "dataType": "double",
-            "lineageTag": "0a0b7b7c-601a-49b1-9f2f-2d259badbc33",
-            "sourceColumn": "Change %",
-            "summarizeBy": "sum"
-          },
-          {
-            "name": "Vol",
-            "annotations": [
-              {
-                "name": "SummarizationSetBy",
-                "value": "Automatic"
-              },
-              {
-                "name": "PBI_FormatHint",
-                "value": "{\"isGeneralNumber\":true}"
-              }
-            ],
-            "dataType": "double",
-            "lineageTag": "326c62f7-2303-45b4-b77c-464bc17c3798",
-            "sourceColumn": "Vol",
-            "summarizeBy": "sum"
-          }
-        ],
-        "lineageTag": "32c17290-896b-4f90-a900-e7566f753cea",
-        "partitions": [
-          {
-            "name": "historical_bitcoin_price_data",
-            "mode": "import",
-            "source": {
-              "expression": [
-                "let",
-                "    // Source: CSV file from Google Drive",
-                "    Source = Csv.Document(",
-                "        Web.Contents(\"https://drive.google.com/uc?id=1Ia4xxCkdpATsZm3yntbAF2qVgAOom0XT&export=download\"), ",
-                "        [Delimiter=\",\", Columns=7, Encoding=65001, QuoteStyle=QuoteStyle.None]",
-                "    ),",
-                "    ",
-                "    // Promote the first row as headers",
-                "    #\"Promoted Headers\" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),",
-                "    ",
-                "    // Add a custom column to handle \"K\" and \"M\" suffixes in the \"Vol.\" column",
-                "    #\"Added Custom Column\" = Table.AddColumn(#\"Promoted Headers\", \"Vol_Corrected\", each ",
-                "        if Text.EndsWith([Vol], \"K\") then Number.FromText(Text.Remove([Vol], {\"K\"})) * 1000",
-                "        else if Text.EndsWith([Vol], \"M\") then Number.FromText(Text.Remove([Vol], {\"M\"})) * 1000000",
-                "        else if Text.EndsWith([Vol], \"B\") then Number.FromText(Text.Remove([Vol], {\"B\"})) * 1000000000",
-                "        else Number.FromText([Vol]), type number",
-                "    ),",
-                "",
-                "    // Remove the original \"Vol.\" column and rename the corrected column",
-                "    #\"Removed Original Vol Column\" = Table.RemoveColumns(#\"Added Custom Column\", {\"Vol\"}),",
-                "    #\"Renamed Columns\" = Table.RenameColumns(#\"Removed Original Vol Column\", {{\"Vol_Corrected\", \"Vol\"}}),",
-                "    ",
-                "    // Change data types of other columns",
-                "    #\"Changed Type\" = Table.TransformColumnTypes(#\"Renamed Columns\",{{\"Date\", type date}, {\"Price\", Currency.Type}, {\"Open\", Currency.Type}, {\"High\", Currency.Type}, {\"Low\", Currency.Type}, {\"Vol\", type number}, {\"Change %\", Percentage.Type}})",
-                "in",
-                "    // Returns the final table with updated \"Vol.\" values",
-                "    #\"Changed Type\""
               ],
               "type": "m"
             }

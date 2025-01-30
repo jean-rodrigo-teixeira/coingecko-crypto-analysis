@@ -10,8 +10,8 @@
       "nodes": [
         {
           "location": {
-            "x": 803,
-            "y": 107
+            "x": 184,
+            "y": 403
           },
           "nodeIndex": "aux_measures",
           "nodeLineageTag": "d650f732-a3b8-458d-b74d-d311cb078245",
@@ -31,7 +31,7 @@
             "height": 104,
             "width": 234
           },
-          "zIndex": 4,
+          "zIndex": 3,
           "expandedHeight": 296
         },
         {
@@ -54,22 +54,11 @@
           },
           "nodeIndex": "fact_crypto_price_data",
           "size": {
-            "height": 152,
+            "height": 128,
             "width": 234
           },
-          "zIndex": 3
-        },
-        {
-          "location": {
-            "x": 1087,
-            "y": 35
-          },
-          "nodeIndex": "historical_bitcoin_price_data",
-          "size": {
-            "height": 248,
-            "width": 234
-          },
-          "zIndex": 0
+          "zIndex": 4,
+          "expandedHeight": 152
         }
       ],
       "name": "All tables",
